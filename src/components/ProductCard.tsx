@@ -14,8 +14,10 @@ export function ProductCard({ product }: { product: Product }) {
           alt={product.alt}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover saturate-[0.96] transition-transform duration-300 group-hover:scale-105"
         />
+        {/* Soft grounding so mismatched workshop backgrounds recede and the grid feels cohesive */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bark/30 to-transparent" />
       </div>
       <div className="flex flex-1 flex-col p-4">
         <h3 className="font-serif text-lg font-bold text-walnut">{product.name}</h3>

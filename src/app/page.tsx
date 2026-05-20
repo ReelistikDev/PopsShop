@@ -11,16 +11,20 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate flex min-h-[78vh] items-center overflow-hidden">
+      <section className="relative isolate flex min-h-[56vh] items-center overflow-hidden sm:min-h-[62vh]">
         <Image
           src="/images/products/tables-farmhouse-table.jpg"
           alt="A handcrafted farmhouse table in the workshop"
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-[center_60%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-bark/90 via-bark/70 to-bark/40" />
+        {/* Even darkening so the busy workshop background recedes, then a
+            left-weighted gradient for headline contrast and a base to ground it. */}
+        <div className="absolute inset-0 bg-bark/55" />
+        <div className="absolute inset-0 bg-gradient-to-r from-bark/95 via-bark/75 to-bark/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-bark/50 to-transparent" />
         <div className="relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
           <div className="max-w-xl">
             <p className="eyebrow text-wood">{site.established}</p>
