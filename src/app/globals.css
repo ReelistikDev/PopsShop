@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+/*
+  Pop's Woodshop — rustic farmhouse theme.
+  Warm wood tones, cream backgrounds, dark brown accents.
+  Color tokens become Tailwind utilities (bg-cream, text-espresso, border-sand, ...).
+*/
+@theme {
+  --color-cream: #f6efe2;
+  --color-cream-50: #fbf6ec;
+  --color-cream-100: #f1e7d5;
+  --color-sand: #e6d6bd;
+  --color-sand-dark: #d8c3a2;
+  --color-wood: #b9824f;
+  --color-wood-dark: #8a5a32;
+  --color-walnut: #5b4031;
+  --color-espresso: #3a2a1d;
+  --color-bark: #271a11;
+  --color-sage: #7c8568;
+  --color-sage-dark: #5f674f;
+  --color-barn: #9c3b2e;
+
+  --radius-card: 0.875rem;
+}
+
+/* Fonts are injected by next/font on <html> as CSS variables; map them to Tailwind. */
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+}
+
+:root {
+  --background: var(--color-cream);
+  --foreground: var(--color-espresso);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-espresso);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif), Georgia, serif;
+    color: var(--color-walnut);
+    letter-spacing: -0.01em;
+  }
+
+  /* Subtle warm selection */
+  ::selection {
+    background-color: var(--color-wood);
+    color: var(--color-cream-50);
+  }
+}
+
+@layer components {
+  /* Primary call-to-action button — dark brown */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    background-color: var(--color-espresso);
+    color: var(--color-cream-50);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+    transition: background-color 0.2s ease, transform 0.05s ease;
+  }
+  .btn-primary:hover {
+    background-color: var(--color-bark);
+  }
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  /* Secondary — wood outline */
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    border: 1.5px solid var(--color-wood-dark);
+    color: var(--color-walnut);
+    background-color: transparent;
+    padding: 0.7rem 1.45rem;
+    font-weight: 600;
+    line-height: 1;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .btn-outline:hover {
+    background-color: var(--color-wood-dark);
+    color: var(--color-cream-50);
+  }
+
+  /* Thin label / eyebrow */
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-wood-dark);
+  }
+}
