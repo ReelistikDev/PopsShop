@@ -52,7 +52,7 @@ export const categories: Category[] = [
     description:
       "Solid-wood tables built for a lifetime of family dinners. Choose your size, wood, and finish — " +
       "from a sturdy harvest table to a slim entryway console.",
-    image: "/images/products/tables-farmhouse-table.jpg",
+    image: "/images/products/tables-console-table.jpg",
   },
   {
     slug: "shelves",
@@ -60,7 +60,7 @@ export const categories: Category[] = [
     tagline: "Wall shelves, cubbies & tiered stands",
     description:
       "Display shelves, storage cubbies, and tiered plant stands — each one fit to your wall and your space.",
-    image: "/images/products/shelves-triangle-shelves.jpg",
+    image: "/images/products/shelves-corner-unit.jpg",
   },
   {
     slug: "signs",
@@ -68,7 +68,7 @@ export const categories: Category[] = [
     tagline: "Engraved & carved custom signs",
     description:
       "Hand-engraved signs for the home, bar, family, or business. Send us your words and we'll burn them in.",
-    image: "/images/products/signs-pub-sign.jpg",
+    image: "/images/products/signs-welcome-frame.jpg",
   },
   {
     slug: "cutting-boards",
@@ -86,272 +86,230 @@ export const categories: Category[] = [
     description:
       "The pieces that don't fit a category — carved panels, memorial keepsakes, engraved gifts, and whatever " +
       "you can dream up. If it's made of wood, we'll build it.",
-    image: "/images/products/custom-carved-panel.jpg",
+    image: "/images/products/custom-rose-shadow-box.jpg",
   },
 ];
 
 export const products: Product[] = [
   // ---- Tables ----
   {
-    slug: "farmhouse-harvest-table",
-    name: "Farmhouse Harvest Table",
-    category: "tables",
-    image: "/images/products/tables-farmhouse-table.jpg",
-    alt: "Solid wood farmhouse harvest table with a walnut-stained top and painted base",
-    blurb:
-      "A solid-top harvest table with a hand-finished walnut surface and a sturdy painted base. Sized to seat your whole family.",
-    details: {
-      sizeNote: "Common sizes 5–8 ft; built to your length",
-      woodNote: "Oak, pine, or maple top",
-      finishNote: "Walnut, dark roast, or natural — base in any color",
-    },
-    featured: true,
-  },
-  {
-    slug: "entryway-console-table",
-    name: "Entryway Console Table",
+    slug: "farmhouse-console-table",
+    name: "Farmhouse Console Table",
     category: "tables",
     image: "/images/products/tables-console-table.jpg",
-    alt: "Slim wooden console table with a light top and white base",
+    alt: "Two-tone console table with a dark plank top, white base, and a low storage shelf",
     blurb:
-      "A slim console for an entryway or behind the couch — light wood top, painted base, and a low shelf for baskets.",
+      "A two-tone console with a dark plank top and a painted base, plus a low shelf for baskets and bins. Perfect behind the couch or as an entryway coffee bar.",
     details: {
-      sizeNote: "Tailored to your wall length",
-      woodNote: "Pine or oak",
-      finishNote: "Two-tone top and base of your choosing",
+      sizeNote: "Built to your wall length",
+      woodNote: "Pine top & base",
+      finishNote: "Dark-stained top, base painted any color",
     },
+    featured: true,
   },
 
   // ---- Shelves ----
   {
-    slug: "mountain-peak-wall-shelves",
-    name: "Mountain Peak Wall Shelves",
+    slug: "corner-shelf-desk-unit",
+    name: "X-Frame Corner Shelf & Desk",
     category: "shelves",
-    image: "/images/products/shelves-triangle-shelves.jpg",
-    alt: "Set of triangular peak-shaped wood wall shelves",
+    image: "/images/products/shelves-corner-unit.jpg",
+    alt: "White X-frame corner shelving towers with a built-in stained desk surface",
     blurb:
-      "Peak-shaped floating shelves that group beautifully on a wall. Sold as a set or singly.",
+      "A space-saving corner unit — tall X-frame towers flanking a built-in desk or display surface. Made for a home-office nook or a tucked-away reading corner.",
     details: {
-      sizeNote: "Single, pair, or trio",
-      woodNote: "Pine or stained hardwood",
-      finishNote: "Natural, honey, or dark stain",
+      sizeNote: "Sized to fit your corner",
+      woodNote: "Painted pine with a stained top",
+      finishNote: "White frame, stained work surface",
     },
     featured: true,
-  },
-  {
-    slug: "tiered-plant-ladder",
-    name: "Tiered Plant Ladder",
-    category: "shelves",
-    image: "/images/products/shelves-tiered-stand.jpg",
-    alt: "Three-tier torched-wood ladder plant stand",
-    blurb:
-      "A leaning, torched-finish ladder stand for plants, pots, and porch displays. Built for indoors or covered patios.",
-    details: {
-      sizeNote: "2, 3, or 4 tiers",
-      woodNote: "Pine with torched finish",
-      finishNote: "Burnt, natural, or sealed for outdoors",
-    },
-  },
-  {
-    slug: "rustic-tiered-stand",
-    name: "Rustic Tiered Stand",
-    category: "shelves",
-    image: "/images/products/shelves-tiered-bench.jpg",
-    alt: "Low rustic tiered wooden display stand",
-    blurb:
-      "A low, wide tiered stand — perfect for a plant corner, farm stand, or market display.",
-    details: {
-      sizeNote: "Built to your footprint",
-      woodNote: "Pine or reclaimed lumber",
-      finishNote: "Torched, stained, or raw",
-    },
-  },
-  {
-    slug: "farmhouse-cubby-cabinet",
-    name: "Farmhouse Cubby Cabinet",
-    category: "shelves",
-    image: "/images/products/shelves-cubby-cabinet.jpg",
-    alt: "White multi-compartment cubby storage cabinet",
-    blurb:
-      "A painted cubby cabinet with open compartments for mudrooms, craft rooms, and entryways.",
-    details: {
-      sizeNote: "Custom cubby count & dimensions",
-      woodNote: "Painted pine",
-      finishNote: "Any paint color or stain",
-    },
   },
 
   // ---- Signs ----
   {
-    slug: "custom-pub-bar-sign",
-    name: "Custom Pub & Bar Sign",
+    slug: "welcome-porch-frame",
+    name: "Welcome Porch Frame",
     category: "signs",
-    image: "/images/products/signs-pub-sign.jpg",
-    alt: "Ornate engraved wooden pub and bar sign",
+    image: "/images/products/signs-welcome-frame.jpg",
+    alt: "Torched-wood Welcome frame holding a hanging basket of pansies on a porch",
     blurb:
-      "A richly engraved bar sign with your name, crest, or saying. The showpiece for a home bar or man cave.",
+      "A torched-finish frame built to cradle a hanging basket or wreath, topped with a carved greeting. A warm hello by the front door in every season.",
     details: {
-      sizeNote: "Wall plaque or large statement size",
-      woodNote: "Birch ply or hardwood",
-      finishNote: "Stained & sealed, your wording engraved",
+      sizeNote: "Porch / entry size",
+      woodNote: "Torched pine",
+      finishNote: "Burnt & sealed; your word or name carved in",
+    },
+  },
+  {
+    slug: "team-pride-paw-plaque",
+    name: "Team Pride Paw Plaque",
+    category: "signs",
+    image: "/images/products/signs-team-paw.jpg",
+    alt: "Rustic framed wooden plaque with a bright painted team paw print",
+    blurb:
+      "A framed, painted team-pride plaque — your team's paw, mascot, or letters cut and finished in your colors. Game-day decor for the porch, den, or man cave.",
+    details: {
+      sizeNote: "Wall plaque",
+      woodNote: "Framed birch & pine",
+      finishNote: "Painted in your team's colors",
+    },
+  },
+  {
+    slug: "engraved-faith-cross",
+    name: "Engraved Faith Cross",
+    category: "signs",
+    image: "/images/products/signs-faith-cross.jpg",
+    alt: "Standing engraved wooden plaque with a layered starburst cross and scripture",
+    blurb:
+      "A slim engraved cross plaque with a layered starburst center and the verse or saying of your choosing. A heartfelt gift for confirmations, weddings, and remembrances.",
+    details: {
+      sizeNote: "Tabletop / shelf size",
+      woodNote: "Layered birch",
+      finishNote: "Engraved with your words",
+    },
+  },
+  {
+    slug: "snarky-mini-sign-set",
+    name: "Snarky Mini Sign Set",
+    category: "signs",
+    image: "/images/products/signs-sarcastic-sign-set.jpg",
+    alt: "A set of small engraved wooden signs with sarcastic one-liner sayings",
+    blurb:
+      "A set of pocket-size engraved signs loaded with attitude. Mix and match the sayings on offer, or send us your own one-liners and we'll burn them in.",
+    details: {
+      sizeNote: "Set of small tiles",
+      woodNote: "Engraved hardwood",
+      finishNote: "Your sayings — pick the snark",
     },
     featured: true,
   },
   {
-    slug: "engraved-humor-sign",
-    name: "Engraved Humor Sign",
+    slug: "old-people-humor-sign",
+    name: "“Old People” Humor Sign",
     category: "signs",
-    image: "/images/products/signs-humor-sign.jpg",
-    alt: "Engraved wooden sign with a humorous saying",
+    image: "/images/products/signs-old-people.jpg",
+    alt: "Engraved wooden sign reading Don't Piss Off Old People, the older we get the less in prison is a deterrent",
     blurb:
-      "A laugh-out-loud engraved sign — send us your saying and we'll burn it into the grain.",
+      "Our best-selling laugh, engraved deep into the grain. Want a cleaner punchline or your own saying? Send it over and we'll engrave that instead.",
     details: {
       sizeNote: "Small to large",
-      woodNote: "Pine or birch",
-      finishNote: "Natural or stained background",
+      woodNote: "Stained hardwood",
+      finishNote: "Engraved; decorative corners optional",
     },
   },
   {
-    slug: "decorative-wall-cross",
-    name: "Decorative Wall Cross",
+    slug: "kitchen-menu-sign",
+    name: "Kitchen “Menu” Sign",
     category: "signs",
-    image: "/images/products/signs-decorative-cross.jpg",
-    alt: "Decorative engraved wooden wall cross",
+    image: "/images/products/signs-menu-sign.jpg",
+    alt: "Engraved kitchen sign reading Today's Menu: Eat It or Starve",
     blurb:
-      "A layered, engraved wall cross — a heartfelt gift for weddings, baptisms, and remembrances.",
+      "A tongue-in-cheek kitchen sign — “Today's Menu: Eat It or Starve.” A fun farmhouse-kitchen accent, or personalize it with your own family motto.",
     details: {
-      sizeNote: "Tabletop or wall size",
-      woodNote: "Birch & hardwood layers",
-      finishNote: "Add a name, date, or verse",
-    },
-  },
-  {
-    slug: "mothers-prayer-plaque",
-    name: "Mother's Prayer Plaque",
-    category: "signs",
-    image: "/images/products/signs-mothers-prayer.jpg",
-    alt: "Framed engraved plaque with a prayer and tree-of-life design",
-    blurb:
-      "A framed, engraved keepsake plaque featuring a tree-of-life and your chosen verse or prayer.",
-    details: {
-      sizeNote: "Framed plaque",
-      woodNote: "Engraved hardwood in a wood frame",
-      finishNote: "Your words & names engraved",
-    },
-  },
-  {
-    slug: "family-tree-round-sign",
-    name: "Family Tree Round Sign",
-    category: "signs",
-    image: "/images/products/signs-family-tree-round.jpg",
-    alt: "Round engraved family tree sign",
-    blurb:
-      "A round engraved sign with a family tree and your last name, established date, or members.",
-    details: {
-      sizeNote: 'Round, 12"–24"',
-      woodNote: "Birch ply",
-      finishNote: "Names & dates engraved",
-    },
-  },
-  {
-    slug: "framed-family-blessing",
-    name: "Framed Family Blessing",
-    category: "signs",
-    image: "/images/products/signs-family-tree-framed.jpg",
-    alt: "Framed engraved family blessing sign",
-    blurb:
-      "A framed engraved blessing or house rules sign — a warm welcome by the front door.",
-    details: {
-      sizeNote: "Framed, wall size",
-      woodNote: "Engraved hardwood",
-      finishNote: "Custom wording in a stained frame",
+      sizeNote: "Counter or wall size",
+      woodNote: "Engraved pine",
+      finishNote: "Decorative border, your wording",
     },
   },
 
   // ---- Custom Projects ----
   {
-    slug: "carved-lattice-panel",
-    name: "Carved Lattice Panel",
+    slug: "layered-lake-wall-art",
+    name: "Layered Lake Wall Art",
     category: "custom",
-    image: "/images/products/custom-carved-panel.jpg",
-    alt: "Intricately carved wooden lattice decorative panel",
+    image: "/images/products/custom-fish-wall-art.jpg",
+    alt: "Framed layered wood wall art of fish and reeds over a blue painted background",
     blurb:
-      "An intricate carved lattice panel — stunning as wall art, a room divider accent, or a headboard inset.",
+      "Layered wood wall art — cut fish and reeds floating over a painted backdrop. A striking centerpiece for a lake house, cabin, or sunroom.",
     details: {
-      sizeNote: "Made to your opening",
-      woodNote: "Hardwood",
-      finishNote: "Stained or natural",
+      sizeNote: "Framed wall size",
+      woodNote: "Layered birch in a wood frame",
+      finishNote: "Painted layers in your colors",
+    },
+  },
+  {
+    slug: "north-pole-santa-cam",
+    name: "North Pole Surveillance Santa Cam",
+    category: "custom",
+    image: "/images/products/custom-santa-cam.jpg",
+    alt: "Wooden windmill Santa Cam with a smiling elf, labeled North Pole Surveillance",
+    blurb:
+      "A playful “Santa Cam” windmill that keeps an eye on the good little ones all December. A keepsake holiday piece the kids will ask about every year.",
+    details: {
+      sizeNote: "Tabletop display",
+      woodNote: "Galvanized + stained wood",
+      finishNote: "Seasonal; elf sitter optional",
+    },
+  },
+  {
+    slug: "cardinal-memorial-ornament",
+    name: "Cardinal Memorial Ornament",
+    category: "custom",
+    image: "/images/products/custom-cardinal-ornament.jpg",
+    alt: "Round wood ornament with a cut tree and two red cardinals reading Cardinals appear when angels are near",
+    blurb:
+      "A round layered ornament — “Cardinals appear when angels are near.” A gentle memorial keepsake; add a name or date for the family.",
+    details: {
+      sizeNote: "Ornament size",
+      woodNote: "Layered birch",
+      finishNote: "Hand-painted cardinals; personalize the text",
     },
     featured: true,
   },
   {
-    slug: "keepsake-memorial-ornament",
-    name: "Keepsake Memorial Ornament",
+    slug: "christmas-in-heaven-ornament",
+    name: "Christmas in Heaven Ornament",
     category: "custom",
-    image: "/images/products/custom-keepsake-ornament.jpg",
-    alt: "Round engraved keepsake ornament on a beaded hanger",
+    image: "/images/products/custom-christmas-heaven-ornament.jpg",
+    alt: "Round engraved ornament on a beaded hanger reading Christmas in Heaven with an empty chair",
     blurb:
-      "A round engraved keepsake on a beaded hanger — a thoughtful memorial or holiday gift.",
+      "A beaded-hanger ornament engraved with the “Christmas in Heaven” poem and an empty chair — a tender way to keep a loved one at the table.",
     details: {
       sizeNote: "Ornament size",
-      woodNote: "Birch",
-      finishNote: "Engraved with your poem or names",
+      woodNote: "Engraved birch",
+      finishNote: "Add their name; beaded hanger included",
+    },
+  },
+  {
+    slug: "drink-up-grinches-caddy",
+    name: "“Drink Up Grinches” Caddy",
+    category: "custom",
+    image: "/images/products/custom-grinch-drink-caddy.jpg",
+    alt: "Round green wooden drink caddy with cup cutouts and a Grinch face reading Drink Up Grinches",
+    blurb:
+      "A round party caddy that holds a flight of cups or shots — “Drink Up Grinches.” A grinning holiday crowd-pleaser; ask about other themes year-round.",
+    details: {
+      sizeNote: "Holds 4–6 glasses",
+      woodNote: "Painted plywood",
+      finishNote: "Themed engraving & paint",
+    },
+  },
+  {
+    slug: "carved-rose-shadow-box",
+    name: "Carved Rose “Love” Shadow Box",
+    category: "custom",
+    image: "/images/products/custom-rose-shadow-box.jpg",
+    alt: "Hinged wooden shadow box with a layered carved red rose and the word love behind a lattice door",
+    blurb:
+      "A hinged keepsake box with a layered carved rose and a lattice door. A romantic gift for an anniversary, Valentine's, or a “just because.”",
+    details: {
+      sizeNote: "Keepsake box",
+      woodNote: "Layered hardwood",
+      finishNote: "Carved rose; optional name or date",
     },
   },
   {
     slug: "personalized-candle-caddy",
     name: "Personalized Candle Caddy",
     category: "custom",
-    image: "/images/products/custom-candle-caddy-family.jpg",
-    alt: "Wooden candle caddy with engraved lettering and glass votives",
+    image: "/images/products/custom-candle-caddy.jpg",
+    alt: "Engraved wooden candle caddy holding a row of glass votives, engraved with a family name",
     blurb:
-      "An engraved wooden caddy holding glass votives — a warm centerpiece personalized with your words.",
+      "An engraved caddy holding a row of glass votives, personalized with your family name. A warm centerpiece for the table or mantel.",
     details: {
-      sizeNote: "3–5 votive sizes",
-      woodNote: "Pine or hardwood",
-      finishNote: "Engraved & sealed, votives included",
-    },
-  },
-  {
-    slug: "engraved-gift-caddy",
-    name: "Engraved Gift Caddy",
-    category: "custom",
-    image: "/images/products/custom-candle-caddy-coworker.jpg",
-    alt: "Engraved wooden gift caddy with candles",
-    blurb:
-      "A ready-to-gift engraved caddy — perfect for coworkers, teachers, and thank-yous.",
-    details: {
-      sizeNote: "Gift size",
-      woodNote: "Pine or hardwood",
-      finishNote: "Personalized engraving",
-    },
-  },
-  {
-    slug: "engraved-wood-bookmarks",
-    name: "Engraved Wood Bookmarks",
-    category: "custom",
-    image: "/images/products/custom-bookmarks.jpg",
-    alt: "Set of engraved wooden bookmarks",
-    blurb:
-      "Slim engraved wood bookmarks — lovely as party favors, classroom gifts, or shop add-ons.",
-    details: {
-      sizeNote: "Singles or sets",
-      woodNote: "Thin birch",
-      finishNote: "Engraved designs & names",
-    },
-  },
-  {
-    slug: "custom-engraved-keepsakes",
-    name: "Custom Engraved Keepsakes",
-    category: "custom",
-    image: "/images/products/custom-variety-display.jpg",
-    alt: "Display of assorted custom engraved wooden keepsakes",
-    blurb:
-      "Coasters, tags, ornaments, and round signs — a sample of the small engraved keepsakes we make to order.",
-    details: {
-      sizeNote: "Various",
-      woodNote: "Birch & hardwoods",
-      finishNote: "Fully personalized",
+      sizeNote: "3–5 votives",
+      woodNote: "Stained pine",
+      finishNote: "Engraved name; votives included",
     },
   },
 ];

@@ -13,8 +13,8 @@ export default function Home() {
       {/* Hero */}
       <section className="relative isolate flex min-h-[56vh] items-center overflow-hidden sm:min-h-[62vh]">
         <Image
-          src="/images/products/tables-farmhouse-table.jpg"
-          alt="A handcrafted farmhouse table in the workshop"
+          src="/images/products/tables-console-table.jpg"
+          alt="A handcrafted farmhouse console table styled in the home"
           fill
           priority
           sizes="100vw"
