@@ -14,7 +14,7 @@ export function ProductCard({ product }: { product: Product }) {
           alt={product.alt}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover saturate-[0.96] transition-transform duration-300 group-hover:scale-105"
+          className="object-contain saturate-[0.96] transition-transform duration-300 group-hover:scale-105"
         />
         {/* Subtle grounding only — the product photos share a rustic backdrop, so keep the piece bright. */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bark/15 to-transparent" />
