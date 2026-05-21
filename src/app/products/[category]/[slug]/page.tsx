@@ -63,14 +63,14 @@ export default async function ProductDetailPage({
 
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
         {/* Image */}
-        <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-card)] border border-sand-dark bg-sand shadow-sm">
+        <div className="relative aspect-[9/10] overflow-hidden rounded-[var(--radius-card)] border border-sand-dark bg-sand shadow-sm">
           <Image
             src={product.image}
             alt={product.alt}
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
+            className="object-contain"
           />
         </div>
 

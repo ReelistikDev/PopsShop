@@ -8,7 +8,7 @@ export function ProductCard({ product }: { product: Product }) {
       href={`/products/${product.category}/${product.slug}`}
       className="group flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-sand-dark/70 bg-cream-50 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-sand">
+      <div className="relative aspect-[9/10] overflow-hidden bg-sand">
         <Image
           src={product.image}
           alt={product.alt}
@@ -16,8 +16,8 @@ export function ProductCard({ product }: { product: Product }) {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="object-cover saturate-[0.96] transition-transform duration-300 group-hover:scale-105"
         />
-        {/* Soft grounding so mismatched workshop backgrounds recede and the grid feels cohesive */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bark/30 to-transparent" />
+        {/* Subtle grounding only — the product photos share a rustic backdrop, so keep the piece bright. */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bark/15 to-transparent" />
       </div>
       <div className="flex flex-1 flex-col p-4">
         <h3 className="font-serif text-lg font-bold text-walnut">{product.name}</h3>
