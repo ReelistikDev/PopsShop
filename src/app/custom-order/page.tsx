@@ -34,7 +34,8 @@ export default async function CustomOrderPage({
         </h1>
         <p className="mt-4 text-lg leading-relaxed text-espresso/80">
           Fill out what you know — even rough details help. The more you share, the better we can
-          quote it. We&apos;ll send you a text to talk it through. There&apos;s no payment here.
+          quote it. Submitting opens WhatsApp with your request pre-filled so Lenwood gets it
+          directly. No payment here.
         </p>
         {matchedProduct && (
           <p className="mt-4 rounded-lg bg-sand/60 px-4 py-2.5 text-sm text-walnut">

@@ -10,11 +10,14 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-sand-dark/60 bg-cream/90 backdrop-blur supports-[backdrop-filter]:bg-cream/75">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <TreeMark className="h-7 w-7 text-wood-dark" />
-          <span className="font-serif text-xl font-bold leading-none text-walnut sm:text-2xl">
-            {site.name}
-          </span>
+        <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
+          {/* Wood-sign nameplate logo */}
+          <div className="flex h-10 items-center rounded-md border-2 border-wood-dark bg-sand px-3 shadow-sm">
+            <TreeMark className="mr-2 h-5 w-5 text-espresso" />
+            <span className="font-serif text-lg font-bold leading-none tracking-tight text-espresso sm:text-xl">
+              {site.name}
+            </span>
+          </div>
         </Link>
 
         {/* Desktop nav */}

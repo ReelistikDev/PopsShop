@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
-import { submitOrder, type OrderState } from "@/app/actions/submit-order";
+import { useState, FormEvent } from "react";
+import { site } from "@/data/site";
 
 type CategoryOption = { slug: string; name: string };
 
@@ -14,8 +14,6 @@ const BUDGET_OPTIONS = [
   "$1,000+",
 ];
 
-const initialState: OrderState = { ok: true };
-
 export function OrderForm({
   categories,
   initialCategory = "",
@@ -25,20 +23,80 @@ export function OrderForm({
   initialCategory?: string;
   initialProduct?: string;
 }) {
-  const [state, formAction, pending] = useActionState(submitOrder, initialState);
-  const err = state.fieldErrors ?? {};
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [sent, setSent] = useState(false);
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    // Honeypot
+    if ((data.get("company") as string)?.trim()) return;
+
+    const errs: Record<string, string> = {};
+    if (!String(data.get("customerName") ?? "").trim()) errs.customerName = "Name is required.";
+    if (!String(data.get("phone") ?? "").trim()) errs.phone = "Phone number is required.";
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      return;
+    }
+    setErrors({});
+
+    const lines: string[] = [
+      `🪵 *New Piece Request — ${site.name}*`,
+      "",
+    ];
+
+    const add = (label: string, key: string) => {
+      const v = String(data.get(key) ?? "").trim();
+      if (v) lines.push(`*${label}:* ${v}`);
+    };
+
+    add("Name", "customerName");
+    add("Phone", "phone");
+    add("Email", "email");
+    add("Category", "category");
+    add("Specific piece", "product");
+    add("Dimensions", "dimensions");
+    add("Wood type", "woodType");
+    add("Finish / color", "finish");
+    add("Quantity", "quantity");
+    add("Budget", "budget");
+    add("Needed by", "deadline");
+    add("Notes", "notes");
+
+    const message = lines.join("\n");
+    const url = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    setSent(true);
+    form.reset();
+  }
+
+  if (sent) {
+    return (
+      <div className="flex flex-col items-center gap-6 py-10 text-center">
+        <WhatsAppIcon className="h-14 w-14 text-[#25D366]" />
+        <div>
+          <h2 className="font-serif text-2xl font-bold text-walnut">WhatsApp opened!</h2>
+          <p className="mt-2 text-espresso/80">
+            Your request has been pre-filled in WhatsApp. Just tap <strong>Send</strong> to reach
+            Lenwood directly.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setSent(false)}
+          className="btn-outline text-sm"
+        >
+          Submit another request
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <form action={formAction} className="space-y-6">
-      {!state.ok && state.message && (
-        <p
-          role="alert"
-          className="rounded-lg border border-barn/40 bg-barn/10 px-4 py-3 text-sm font-medium text-barn"
-        >
-          {state.message}
-        </p>
-      )}
-
+    <form onSubmit={handleSubmit} noValidate className="space-y-6">
       {/* Honeypot — visually hidden, must stay empty */}
       <div aria-hidden className="hidden">
         <label>
@@ -49,14 +107,14 @@ export function OrderForm({
 
       <Fieldset legend="Your contact info">
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Your name" required error={err.customerName}>
+          <Field label="Your name" required error={errors.customerName}>
             <input name="customerName" type="text" required autoComplete="name" className={inputClass} />
           </Field>
-          <Field label="Phone number" required error={err.phone} hint="We'll text you back here">
+          <Field label="Phone number" required error={errors.phone} hint="We'll reply via WhatsApp">
             <input name="phone" type="tel" required autoComplete="tel" className={inputClass} />
           </Field>
         </div>
-        <Field label="Email" error={err.email} hint="Optional">
+        <Field label="Email" hint="Optional">
           <input name="email" type="email" autoComplete="email" className={inputClass} />
         </Field>
       </Fieldset>
@@ -135,23 +193,15 @@ export function OrderForm({
             className={`${inputClass} resize-y`}
           />
         </Field>
-
-        <Field label="Inspiration photo" hint="Optional · JPG or PNG, up to 10 MB">
-          <input
-            name="photo"
-            type="file"
-            accept="image/*"
-            className="block w-full text-sm text-espresso/80 file:mr-4 file:rounded-full file:border-0 file:bg-wood-dark file:px-4 file:py-2 file:font-semibold file:text-cream-50 hover:file:bg-walnut"
-          />
-        </Field>
       </Fieldset>
 
       <div className="flex flex-col items-start gap-3 border-t border-sand-dark pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-espresso/70">
-          No payment now — we&apos;ll text you back to talk details and pricing.
+        <p className="flex items-center gap-2 text-sm text-espresso/70">
+          <WhatsAppIcon className="h-4 w-4 text-[#25D366]" />
+          Opens WhatsApp — no payment, we&apos;ll talk details &amp; pricing.
         </p>
-        <button type="submit" disabled={pending} className="btn-primary w-full sm:w-auto disabled:opacity-60">
-          {pending ? "Sending…" : "Send My Request"}
+        <button type="submit" className="btn-primary w-full sm:w-auto">
+          Send via WhatsApp
         </button>
       </div>
     </form>
@@ -195,5 +245,14 @@ function Field({
       {children}
       {error && <span className="mt-1 block text-xs font-medium text-barn">{error}</span>}
     </label>
+  );
+}
+
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.554 4.103 1.523 5.827L.057 23.882a.5.5 0 0 0 .61.61l6.101-1.48A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 0 1-5.032-1.388l-.36-.214-3.742.907.934-3.653-.235-.375A9.818 9.818 0 1 1 12 21.818z" />
+    </svg>
   );
 }
