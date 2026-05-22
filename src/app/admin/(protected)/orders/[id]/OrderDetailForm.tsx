@@ -1,6 +1,6 @@
 "use client";
 import { useState, useTransition } from "react";
-import { updateOrderAction } from "@/app/actions/admin-orders";
+import { updateOrderAction, resendPaymentEmailAction } from "@/app/actions/admin-orders";
 
 const STATUSES = [
   "new",
@@ -37,6 +37,8 @@ export function OrderDetailForm({ order }: { order: Order }) {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailError, setEmailError] = useState("");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -292,6 +294,53 @@ export function OrderDetailForm({ order }: { order: Order }) {
             className={`${inp} resize-y`}
           />
         </div>
+
+        {/* Payment link */}
+        {String(order.status) === "approved" && !!order.payment_token && (
+          <div className="rounded-xl border border-[#e8dcc8] bg-amber-50 p-5">
+            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-[#8a5a32]">
+              Payment Link
+            </h2>
+            <div className="flex items-center gap-2">
+              <input
+                readOnly
+                value={`${typeof window !== "undefined" ? window.location.origin : ""}/pay/${String(order.payment_token)}`}
+                className="flex-1 rounded-lg border border-[#e8dcc8] bg-white px-3 py-2 text-xs text-gray-700 outline-none"
+              />
+              <button
+                type="button"
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    `${window.location.origin}/pay/${String(order.payment_token)}`
+                  )
+                }
+                className="rounded-lg bg-[#8a5a32] px-3 py-2 text-xs font-semibold text-white hover:bg-[#7a4f2c]"
+              >
+                Copy
+              </button>
+            </div>
+            <div className="mt-3 flex items-center gap-3">
+              <button
+                type="button"
+                disabled={isPending}
+                onClick={() => {
+                  setEmailSent(false);
+                  setEmailError("");
+                  startTransition(async () => {
+                    const res = await resendPaymentEmailAction(id);
+                    if (res.error) setEmailError(res.error);
+                    else { setEmailSent(true); setTimeout(() => setEmailSent(false), 4000); }
+                  });
+                }}
+                className="text-xs font-semibold text-[#8a5a32] hover:underline disabled:opacity-50"
+              >
+                {isPending ? "Sending…" : "Resend payment email"}
+              </button>
+              {emailSent && <span className="text-xs font-medium text-green-600">Sent!</span>}
+              {emailError && <span className="text-xs font-medium text-red-600">{emailError}</span>}
+            </div>
+          </div>
+        )}
 
         {/* Save */}
         <div className="flex items-center gap-3">
