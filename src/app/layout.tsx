@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { site } from "@/data/site";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
+import { ConditionalShell } from "@/components/ConditionalShell";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -42,9 +41,7 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cream text-espresso">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
+        <ConditionalShell>{children}</ConditionalShell>
       </body>
     </html>
   );
