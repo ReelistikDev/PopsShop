@@ -8,6 +8,7 @@ const NAV = [
   { href: "/admin/orders",    label: "Orders" },
   { href: "/admin/calendar",  label: "Calendar" },
   { href: "/admin/shipping",  label: "Shipping" },
+  { href: "/admin/finances",  label: "Finances" },
 ];
 
 function DashIcon() {
@@ -47,8 +48,16 @@ function ShipIcon() {
     </svg>
   );
 }
+function FinanceIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="12" y1="1" x2="12" y2="23" />
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+    </svg>
+  );
+}
 
-const ICONS = [DashIcon, OrderIcon, CalIcon, ShipIcon];
+const ICONS = [DashIcon, OrderIcon, CalIcon, ShipIcon, FinanceIcon];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
