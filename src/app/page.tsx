@@ -50,9 +50,9 @@ export default function Home() {
 
       {/* Intro */}
       <section className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20">
-        <p className="eyebrow">Our Family Workshop</p>
+        <p className="eyebrow">Handcrafted in Camden, SC</p>
         <h2 className="mt-3 font-serif text-3xl font-bold sm:text-4xl">
-          Three generations of sawdust and craft
+          Built by hand, made to last
         </h2>
         <p className="mt-5 text-lg leading-relaxed text-espresso/80">{site.intro}</p>
       </section>
@@ -75,8 +75,8 @@ export default function Home() {
             Have something special in mind?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-cream-100/85">
-            Tell us your dimensions, wood, and finish. We&apos;ll text you back to talk through the
-            details and price — no checkout, no pressure.
+            Tell us your dimensions, wood, and finish. Reach us directly via WhatsApp or email —
+            no checkout, no pressure.
           </p>
           <Link
             href="/custom-order"
