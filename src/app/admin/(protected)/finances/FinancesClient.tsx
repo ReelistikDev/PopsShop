@@ -15,6 +15,7 @@ type FinOrder = {
   category: string | null;
   product: string | null;
   status: string;
+  payment_status: string | null;
   quote_amount: number | null;
   deposit_amount: number | null;
   due_date: string | null;
@@ -143,7 +144,11 @@ export function FinancesClient({
   // ── Revenue metrics ──────────────────────────────────────────────
   const active = useMemo(() => filtered.filter((o) => o.status !== "cancelled"), [filtered]);
   const totalQuoted = active.reduce((s, o) => s + (o.quote_amount ?? 0), 0);
-  const totalReceived = active.reduce((s, o) => s + (o.deposit_amount ?? 0), 0);
+  const totalReceived = active.reduce((s, o) => {
+    if (o.payment_status === "paid") return s + (o.quote_amount ?? 0);
+    if (o.payment_status === "deposit") return s + (o.deposit_amount ?? 0);
+    return s;
+  }, 0);
   const outstanding = totalQuoted - totalReceived;
   const pipelineOrders = active.filter((o) =>
     ["quoted", "approved", "in_progress"].includes(o.status)
@@ -185,7 +190,11 @@ export function FinancesClient({
         key,
         label,
         quoted: mo.reduce((s, o) => s + (o.quote_amount ?? 0), 0),
-        received: mo.reduce((s, o) => s + (o.deposit_amount ?? 0), 0),
+        received: mo.reduce((s, o) => {
+          if (o.payment_status === "paid") return s + (o.quote_amount ?? 0);
+          if (o.payment_status === "deposit") return s + (o.deposit_amount ?? 0);
+          return s;
+        }, 0),
         expenses: exp.reduce((s, e) => s + e.amount, 0),
         count: mo.length,
       };
@@ -201,7 +210,8 @@ export function FinancesClient({
       if (!map[s]) map[s] = { count: 0, quoted: 0, received: 0 };
       map[s].count++;
       map[s].quoted += o.quote_amount ?? 0;
-      map[s].received += o.deposit_amount ?? 0;
+      if (o.payment_status === "paid") map[s].received += o.quote_amount ?? 0;
+      else if (o.payment_status === "deposit") map[s].received += o.deposit_amount ?? 0;
     }
     return Object.entries(STATUS_LABEL)
       .map(([s, label]) => ({
@@ -229,12 +239,14 @@ export function FinancesClient({
   // ── Action items ─────────────────────────────────────────────────
   const needsQuote = active.filter((o) => o.status === "new" && !o.quote_amount);
   const approvedNoDeposit = active.filter(
-    (o) => ["approved", "in_progress"].includes(o.status) && !o.deposit_amount
+    (o) =>
+      ["approved", "in_progress"].includes(o.status) &&
+      (!o.payment_status || o.payment_status === "unpaid")
   );
   const balanceDueOrders = active.filter(
     (o) =>
       ["complete", "shipped"].includes(o.status) &&
-      (o.quote_amount ?? 0) > (o.deposit_amount ?? 0)
+      o.payment_status !== "paid"
   );
 
   // ── Transactions table ───────────────────────────────────────────

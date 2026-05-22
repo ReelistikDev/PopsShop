@@ -4,6 +4,7 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 
 export type OrderUpdate = {
   status?: string;
+  payment_status?: string;
   quote_amount?: number | null;
   deposit_amount?: number | null;
   due_date?: string | null;

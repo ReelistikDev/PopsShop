@@ -12,7 +12,7 @@ async function getFinancesData() {
       sb
         .from("woodworking_orders")
         .select(
-          "id, customer_name, category, product, status, quote_amount, deposit_amount, due_date, created_at"
+          "id, customer_name, category, product, status, payment_status, quote_amount, deposit_amount, due_date, created_at"
         )
         .order("created_at", { ascending: false }),
       sb

@@ -43,6 +43,7 @@ export function OrderDetailForm({ order }: { order: Order }) {
     const fd = new FormData(e.currentTarget);
     const updates = {
       status: String(fd.get("status") ?? ""),
+      payment_status: String(fd.get("payment_status") ?? "unpaid"),
       quote_amount: fd.get("quote_amount")
         ? Number(fd.get("quote_amount"))
         : null,
@@ -139,7 +140,7 @@ export function OrderDetailForm({ order }: { order: Order }) {
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500">
             Status &amp; Billing
           </h2>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <label className="mb-1 block text-xs font-semibold text-gray-600">
                 Status
@@ -154,6 +155,20 @@ export function OrderDetailForm({ order }: { order: Order }) {
                     {STATUS_LABEL[s]}
                   </option>
                 ))}
+              </select>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold text-gray-600">
+                Payment Status
+              </label>
+              <select
+                name="payment_status"
+                defaultValue={String(order.payment_status ?? "unpaid")}
+                className={inp}
+              >
+                <option value="unpaid">Unpaid</option>
+                <option value="deposit">Deposit Received</option>
+                <option value="paid">Paid in Full</option>
               </select>
             </div>
             <div>
