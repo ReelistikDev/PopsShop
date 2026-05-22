@@ -2,12 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  getCategory,
-  getProduct,
-  getProductsByCategory,
-  products,
-} from "@/data/products";
+import { getProduct, products } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
 
 type Params = { category: string; slug: string };
@@ -40,8 +35,7 @@ export default async function ProductDetailPage({
   const product = getProduct(category, slug);
   if (!product) notFound();
 
-  const cat = getCategory(category)!;
-  const related = getProductsByCategory(product.category)
+  const related = products
     .filter((p) => p.slug !== product.slug)
     .slice(0, 3);
 
@@ -52,10 +46,6 @@ export default async function ProductDetailPage({
       <nav className="text-sm text-espresso/60">
         <Link href="/products" className="hover:text-walnut">
           Shop
-        </Link>
-        <span className="px-2">/</span>
-        <Link href={`/products/${cat.slug}`} className="hover:text-walnut">
-          {cat.name}
         </Link>
         <span className="px-2">/</span>
         <span className="text-walnut">{product.name}</span>
@@ -76,7 +66,7 @@ export default async function ProductDetailPage({
 
         {/* Details */}
         <div>
-          <p className="eyebrow">{cat.name}</p>
+          <p className="eyebrow">Made to Order</p>
           <h1 className="mt-2 font-serif text-3xl font-bold sm:text-4xl">{product.name}</h1>
           <p className="mt-4 text-lg leading-relaxed text-espresso/80">{product.blurb}</p>
 
@@ -114,7 +104,7 @@ export default async function ProductDetailPage({
 
       {related.length > 0 && (
         <section className="mt-20">
-          <h2 className="font-serif text-2xl font-bold sm:text-3xl">More {cat.name}</h2>
+          <h2 className="font-serif text-2xl font-bold sm:text-3xl">More Handmade Pieces</h2>
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p) => (
               <ProductCard key={p.slug} product={p} />

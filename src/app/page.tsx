@@ -1,9 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { categories, getFeaturedProducts } from "@/data/products";
+import { getFeaturedProducts } from "@/data/products";
 import { site } from "@/data/site";
 import { ProductCard } from "@/components/ProductCard";
-import { CategoryCard } from "@/components/CategoryCard";
 
 export default function Home() {
   const featured = getFeaturedProducts();
@@ -56,27 +55,6 @@ export default function Home() {
           Three generations of sawdust and craft
         </h2>
         <p className="mt-5 text-lg leading-relaxed text-espresso/80">{site.intro}</p>
-      </section>
-
-      {/* Categories */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <p className="eyebrow">What We Make</p>
-            <h2 className="mt-2 font-serif text-3xl font-bold sm:text-4xl">Shop by category</h2>
-          </div>
-          <Link
-            href="/products"
-            className="hidden shrink-0 text-sm font-semibold text-wood-dark hover:text-walnut sm:inline"
-          >
-            View all →
-          </Link>
-        </div>
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {categories.map((category) => (
-            <CategoryCard key={category.slug} category={category} />
-          ))}
-        </div>
       </section>
 
       {/* Featured products */}

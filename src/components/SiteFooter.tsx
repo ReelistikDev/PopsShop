@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { categories } from "@/data/products";
 import { site } from "@/data/site";
 
 export function SiteFooter() {
@@ -20,19 +19,25 @@ export function SiteFooter() {
 
         <div>
           <h4 className="text-sm font-semibold uppercase tracking-widest text-wood">
-            Shop by Category
+            Explore
           </h4>
           <ul className="mt-4 space-y-2 text-sm">
-            {categories.map((c) => (
-              <li key={c.slug}>
-                <Link
-                  href={`/products/${c.slug}`}
-                  className="text-cream-100/80 transition-colors hover:text-cream-50"
-                >
-                  {c.name}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link
+                href="/products"
+                className="text-cream-100/80 transition-colors hover:text-cream-50"
+              >
+                Shop All Pieces
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/custom-order"
+                className="text-cream-100/80 transition-colors hover:text-cream-50"
+              >
+                Request a Custom Piece
+              </Link>
+            </li>
           </ul>
         </div>
 
