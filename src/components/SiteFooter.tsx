@@ -6,12 +6,12 @@ export function SiteFooter() {
   const waUrl = `https://wa.me/${site.whatsappNumber}`;
 
   return (
-    <footer className="mt-20 border-t border-walnut/20 bg-bark text-cream-100">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
+    <footer className="border-t border-walnut/20 bg-bark text-cream-100">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-3">
         <div>
           <h3 className="font-serif text-2xl font-bold text-cream-50">{site.name}</h3>
           <p className="mt-1 text-sm text-wood">{site.ownerName}</p>
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-cream-100/80">
+          <p className="mt-2 max-w-xs text-sm leading-relaxed text-cream-100/80">
             {site.tagline}
           </p>
           <p className="mt-4 text-xs uppercase tracking-widest text-wood">
@@ -58,7 +58,7 @@ export function SiteFooter() {
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary mt-5 text-sm"
+            className="btn-primary mt-4 text-sm"
           >
             Message on WhatsApp
           </a>

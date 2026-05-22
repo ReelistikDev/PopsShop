@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate flex min-h-[56vh] items-center overflow-hidden sm:min-h-[62vh]">
+      <section className="relative isolate flex min-h-[50vh] items-center overflow-hidden sm:min-h-[58vh]">
         <Image
           src="/images/products/tables-console-table.jpg"
           alt="A handcrafted farmhouse console table styled in the home"
@@ -24,16 +24,16 @@ export default function Home() {
         <div className="absolute inset-0 bg-bark/55" />
         <div className="absolute inset-0 bg-gradient-to-r from-bark/95 via-bark/75 to-bark/35" />
         <div className="absolute inset-0 bg-gradient-to-t from-bark/50 to-transparent" />
-        <div className="relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
+        <div className="relative mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
           <div className="max-w-xl">
             <p className="eyebrow text-wood">{site.established}</p>
-            <h1 className="mt-3 font-serif text-4xl font-bold leading-tight text-cream-50 sm:text-5xl md:text-6xl">
+            <h1 className="mt-3 font-serif text-3xl font-bold leading-tight text-cream-50 sm:text-5xl md:text-6xl">
               Handmade woodwork, built just for you.
             </h1>
-            <p className="mt-5 text-lg leading-relaxed text-cream-100/90">
+            <p className="mt-4 text-base leading-relaxed text-cream-100/90 sm:text-lg">
               {site.tagline}
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link href="/products" className="btn-primary">
                 Browse the Shop
               </Link>
@@ -49,19 +49,19 @@ export default function Home() {
       </section>
 
       {/* Intro */}
-      <section className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20">
+      <section className="mx-auto max-w-3xl px-4 py-10 text-center sm:px-6 sm:py-14">
         <p className="eyebrow">Handcrafted in Camden, SC</p>
-        <h2 className="mt-3 font-serif text-3xl font-bold sm:text-4xl">
+        <h2 className="mt-3 font-serif text-2xl font-bold sm:text-3xl">
           Built by hand, made to last
         </h2>
-        <p className="mt-5 text-lg leading-relaxed text-espresso/80">{site.intro}</p>
+        <p className="mt-3 text-base leading-relaxed text-espresso/80 sm:text-lg">{site.intro}</p>
       </section>
 
       {/* Featured products */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
         <p className="eyebrow">Fresh From the Bench</p>
-        <h2 className="mt-2 font-serif text-3xl font-bold sm:text-4xl">Featured pieces</h2>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <h2 className="mt-2 font-serif text-2xl font-bold sm:text-3xl">Featured pieces</h2>
+        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map((product) => (
             <ProductCard key={product.slug} product={product} />
           ))}
@@ -70,17 +70,17 @@ export default function Home() {
 
       {/* CTA band */}
       <section className="bg-walnut">
-        <div className="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6">
-          <h2 className="font-serif text-3xl font-bold text-cream-50 sm:text-4xl">
+        <div className="mx-auto max-w-4xl px-4 py-12 text-center sm:px-6">
+          <h2 className="font-serif text-2xl font-bold text-cream-50 sm:text-3xl">
             Have something special in mind?
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-cream-100/85">
+          <p className="mx-auto mt-3 max-w-xl text-base text-cream-100/85 sm:text-lg">
             Tell us your dimensions, wood, and finish. Reach us directly via WhatsApp or email —
             no checkout, no pressure.
           </p>
           <Link
             href="/custom-order"
-            className="btn-primary mt-8 bg-cream-50 text-walnut hover:bg-cream-100"
+            className="btn-primary mt-6 bg-cream-50 text-walnut hover:bg-cream-100"
           >
             Start Your Custom Order
           </Link>

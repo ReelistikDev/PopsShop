@@ -118,7 +118,7 @@
       /* top-to-bottom depth shading */
       linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(0,0,0,0.18) 100%);
     border-bottom: 2px solid #3a1e0a;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.45);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.06) inset;
   }
 
   /* ── Wood-sign nav tab ── */
@@ -126,7 +126,8 @@
   .nav-sign {
     display: inline-flex;
     align-items: center;
-    padding: 0.35rem 0.85rem;
+    padding: 0.3rem 0.75rem;
+    letter-spacing: 0.01em;
     border-radius: 0.3rem 0.3rem 0.45rem 0.45rem;
     background-color: var(--color-sand);
     background-image:
@@ -159,6 +160,7 @@
 
   /* ── Product card grain strip ── */
   .card-grain-top {
+    height: 4px;
     background-color: var(--color-wood-dark);
     background-image:
       repeating-linear-gradient(
@@ -169,5 +171,19 @@
         rgba(0,0,0,0.08) 14px, rgba(0,0,0,0.08) 15px
       ),
       linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.1) 100%);
+  }
+
+  /* ── Wood divider ── */
+  .wood-divider {
+    height: 3px;
+    background-image: repeating-linear-gradient(90deg, var(--color-wood-dark) 0px, var(--color-wood-dark) 8px, transparent 8px, transparent 14px);
+    opacity: 0.25;
+    border-radius: 9999px;
+  }
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
   }
 }

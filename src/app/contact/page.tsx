@@ -11,21 +11,21 @@ export default function ContactPage() {
   const waUrl = `https://wa.me/${site.whatsappNumber}`;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
+    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
       <header className="max-w-xl">
         <p className="eyebrow">Contact Us</p>
-        <h1 className="mt-2 font-serif text-4xl font-bold sm:text-5xl">Get in Touch</h1>
-        <p className="mt-4 text-lg leading-relaxed text-espresso/80">
+        <h1 className="mt-2 font-serif text-3xl font-bold sm:text-4xl">Get in Touch</h1>
+        <p className="mt-3 text-base leading-relaxed text-espresso/80 sm:text-lg">
           Have a question about a custom piece or want to talk through an idea? Reach out directly —
           we&apos;re happy to chat.
         </p>
       </header>
 
-      <div className="mt-12 grid gap-8 sm:grid-cols-2">
+      <div className="mt-8 grid gap-6 sm:grid-cols-2">
         {/* Business card panel */}
-        <div className="rounded-[var(--radius-card)] border-2 border-wood-dark bg-sand p-8 shadow-md">
+        <div className="rounded-[var(--radius-card)] border-2 border-wood-dark bg-sand p-5 shadow-md sm:p-7">
           {/* Wood-sign header */}
-          <div className="mb-6 border-b border-wood-dark/40 pb-5 text-center">
+          <div className="mb-4 border-b border-wood-dark/40 pb-5 text-center">
             <div className="mb-1 flex items-center justify-center gap-2">
               <TreeIcon className="h-8 w-8 text-espresso" />
             </div>
@@ -131,16 +131,16 @@ function ActionCard({
     : {};
 
   return (
-    <div className="rounded-[var(--radius-card)] border border-sand-dark bg-cream-50 p-5 shadow-sm">
+    <div className="rounded-[var(--radius-card)] border border-sand-dark bg-cream-50 p-4 shadow-sm">
       <div className="flex items-start gap-4">
         <div className="mt-0.5 shrink-0">{icon}</div>
         <div className="flex-1">
           <h3 className="font-serif text-lg font-bold text-walnut">{title}</h3>
-          <p className="mt-1 text-sm leading-relaxed text-espresso/75">{description}</p>
+          <p className="mt-1 text-xs leading-relaxed text-espresso/75">{description}</p>
           <Link
             href={href}
             {...linkProps}
-            className="btn-outline mt-3 text-sm"
+            className="btn-outline mt-2 text-sm"
           >
             {label}
           </Link>

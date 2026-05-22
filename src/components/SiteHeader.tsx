@@ -9,23 +9,23 @@ export function SiteHeader() {
 
   return (
     <header className="wood-header sticky top-0 z-40">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
 
         {/* Brand — engraved-on-wood look */}
         <Link href="/" className="flex items-center gap-2.5 group" onClick={() => setOpen(false)}>
           <TreeMark className="h-7 w-7 text-sand drop-shadow-sm" />
           <div className="flex flex-col leading-none">
-            <span className="font-serif text-xl font-bold tracking-wide text-sand drop-shadow sm:text-2xl">
+            <span className="font-serif text-lg font-bold tracking-wide text-sand drop-shadow sm:text-xl">
               {site.name}
             </span>
-            <span className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-sand/60">
+            <span className="text-[0.55rem] font-semibold uppercase tracking-[0.2em] text-sand/60">
               {site.established}
             </span>
           </div>
         </Link>
 
         {/* Desktop nav — wood-sign tabs */}
-        <nav className="hidden items-end gap-1.5 md:flex">
+        <nav className="hidden items-end gap-1 md:flex">
           {navLinks.map((link) => (
             <Link key={link.href} href={link.href} className="nav-sign">
               {link.label}
@@ -33,7 +33,7 @@ export function SiteHeader() {
           ))}
           <Link
             href="/custom-order"
-            className="ml-2 inline-flex items-center gap-1.5 rounded-full bg-barn px-4 py-2 text-sm font-bold text-cream-50 shadow-md transition hover:bg-red-900 active:translate-y-px"
+            className="ml-2 inline-flex items-center gap-1.5 rounded-full bg-barn px-3.5 py-1.5 text-sm font-bold text-cream-50 shadow-md transition hover:bg-red-900 active:translate-y-px"
           >
             Request a Piece
           </Link>
@@ -67,12 +67,7 @@ export function SiteHeader() {
       {/* Mobile menu — wood-toned panel */}
       {open && (
         <nav
-          className="border-t border-black/30 px-4 pb-4 pt-2 md:hidden"
-          style={{
-            backgroundColor: "#4a2810",
-            backgroundImage:
-              "repeating-linear-gradient(92deg, transparent 0px, transparent 6px, rgba(255,255,255,0.03) 6px, rgba(255,255,255,0.03) 7px)",
-          }}
+          className="border-t border-black/30 bg-walnut/95 px-4 pb-4 pt-2 backdrop-blur-sm md:hidden"
         >
           <ul className="flex flex-col gap-1">
             {navLinks.map((link) => (
@@ -80,7 +75,7 @@ export function SiteHeader() {
                 <Link
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-md px-3 py-2.5 text-base font-semibold text-sand/90 hover:bg-white/10"
+                  className="block rounded-md px-3 py-2 text-sm font-semibold text-sand/90 hover:bg-white/10"
                 >
                   {link.label}
                 </Link>

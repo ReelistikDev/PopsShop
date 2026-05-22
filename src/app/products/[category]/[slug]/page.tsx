@@ -42,7 +42,7 @@ export default async function ProductDetailPage({
   const orderHref = `/custom-order?product=${product.slug}`;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
       <nav className="text-sm text-espresso/60">
         <Link href="/products" className="hover:text-walnut">
           Shop
@@ -51,9 +51,9 @@ export default async function ProductDetailPage({
         <span className="text-walnut">{product.name}</span>
       </nav>
 
-      <div className="mt-6 grid gap-10 lg:grid-cols-2">
+      <div className="mt-6 grid gap-8 lg:grid-cols-2">
         {/* Image */}
-        <div className="relative aspect-[9/10] overflow-hidden rounded-[var(--radius-card)] border border-sand-dark bg-sand shadow-sm">
+        <div className="relative aspect-[9/10] overflow-hidden rounded-[var(--radius-card)] border border-sand-dark bg-sand shadow-[0_4px_20px_rgba(58,42,29,0.15)]">
           <Image
             src={product.image}
             alt={product.alt}
@@ -67,8 +67,8 @@ export default async function ProductDetailPage({
         {/* Details */}
         <div>
           <p className="eyebrow">Made to Order</p>
-          <h1 className="mt-2 font-serif text-3xl font-bold sm:text-4xl">{product.name}</h1>
-          <p className="mt-4 text-lg leading-relaxed text-espresso/80">{product.blurb}</p>
+          <h1 className="mt-2 font-serif text-2xl font-bold sm:text-3xl">{product.name}</h1>
+          <p className="mt-3 text-base leading-relaxed text-espresso/80 sm:text-lg">{product.blurb}</p>
 
           {product.details && (
             <dl className="mt-6 space-y-3 rounded-[var(--radius-card)] bg-cream-50 p-5">
@@ -87,8 +87,8 @@ export default async function ProductDetailPage({
           <div className="mt-7 rounded-[var(--radius-card)] border border-wood-dark/30 bg-sand/50 p-5">
             <p className="font-serif text-lg font-bold text-walnut">Made to order</p>
             <p className="mt-1 text-sm text-espresso/75">
-              There&apos;s no checkout — send a request with your details and we&apos;ll text you back
-              with pricing and timing.
+              There&apos;s no checkout — send a request and we&apos;ll reach you via WhatsApp or email
+              to talk through pricing and timing.
             </p>
             <div className="mt-4 flex flex-col gap-3 sm:flex-row">
               <Link href={orderHref} className="btn-primary">
@@ -103,8 +103,8 @@ export default async function ProductDetailPage({
       </div>
 
       {related.length > 0 && (
-        <section className="mt-20">
-          <h2 className="font-serif text-2xl font-bold sm:text-3xl">More Handmade Pieces</h2>
+        <section className="mt-12 sm:mt-16">
+          <h2 className="font-serif text-xl font-bold sm:text-2xl">More Handmade Pieces</h2>
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p) => (
               <ProductCard key={p.slug} product={p} />

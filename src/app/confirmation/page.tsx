@@ -15,38 +15,38 @@ export default async function ConfirmationPage({
   const firstName = (name ?? "").trim();
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col items-center px-4 py-20 text-center sm:px-6 sm:py-28">
-      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-sage/20 text-sage-dark">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <div className="mx-auto flex max-w-2xl flex-col items-center px-4 py-12 text-center sm:px-6 sm:py-20">
+      <div className="mt-5 flex h-16 w-16 items-center justify-center rounded-full bg-sage/20 text-sage-dark">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20 6 9 17l-5-5" />
         </svg>
       </div>
 
-      <h1 className="mt-7 font-serif text-4xl font-bold sm:text-5xl">
+      <h1 className="mt-5 font-serif text-3xl font-bold sm:text-4xl">
         {firstName ? `Thank you, ${firstName}!` : "Request received!"}
       </h1>
-      <p className="mt-4 text-lg leading-relaxed text-espresso/80">
-        Your request is in the shop. We&apos;ve been notified and will{" "}
-        <span className="font-semibold text-walnut">text you back soon</span> to talk through the
-        details, timing, and pricing.
+      <p className="mt-3 text-base leading-relaxed text-espresso/80 sm:text-lg">
+        Your request is in the shop. Lenwood will{" "}
+        <span className="font-semibold text-walnut">reach back out via WhatsApp or email</span> to
+        talk through the details, timing, and pricing.
       </p>
 
-      <div className="mt-8 w-full rounded-[var(--radius-card)] border border-sand-dark bg-cream-50 p-6 text-left">
-        <h2 className="font-serif text-xl font-bold text-walnut">What happens next</h2>
+      <div className="mt-6 w-full rounded-[var(--radius-card)] border border-sand-dark bg-cream-50 p-5 text-left">
+        <h2 className="font-serif text-lg font-bold text-walnut">What happens next</h2>
         <ol className="mt-3 space-y-2 text-sm text-espresso/80">
           <li className="flex gap-3">
-            <Step n={1} /> We review your request here in the workshop.
+            <Step n={1} /> Lenwood reviews your request in the workshop.
           </li>
           <li className="flex gap-3">
-            <Step n={2} /> We text you to confirm details and a price.
+            <Step n={2} /> He reaches out via WhatsApp or email to confirm details and pricing.
           </li>
           <li className="flex gap-3">
-            <Step n={3} /> Once you approve, we start building your piece by hand.
+            <Step n={3} /> Once you approve, he starts building your piece by hand.
           </li>
         </ol>
       </div>
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <Link href="/products" className="btn-primary">
           Keep Browsing
         </Link>
