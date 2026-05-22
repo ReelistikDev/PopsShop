@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useRef, FormEvent } from "react";
 import { site } from "@/data/site";
 
 type CategoryOption = { slug: string; name: string };
+type SendRoute = "whatsapp" | "email";
 
 const BUDGET_OPTIONS = [
   "Not sure yet",
@@ -24,7 +25,8 @@ export function OrderForm({
   initialProduct?: string;
 }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState<SendRoute | null>(null);
+  const routeRef = useRef<SendRoute>("whatsapp");
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -43,50 +45,78 @@ export function OrderForm({
     }
     setErrors({});
 
-    const lines: string[] = [
-      `🪵 *New Piece Request — ${site.name}*`,
-      "",
-    ];
+    const get = (key: string) => String(data.get(key) ?? "").trim();
 
-    const add = (label: string, key: string) => {
-      const v = String(data.get(key) ?? "").trim();
-      if (v) lines.push(`*${label}:* ${v}`);
-    };
+    if (routeRef.current === "email") {
+      const bodyLines: string[] = [`New Piece Request — ${site.name}`, ""];
+      const addPlain = (label: string, key: string) => {
+        const v = get(key);
+        if (v) bodyLines.push(`${label}: ${v}`);
+      };
+      addPlain("Name", "customerName");
+      addPlain("Phone", "phone");
+      addPlain("Email", "email");
+      addPlain("Category", "category");
+      addPlain("Specific piece", "product");
+      addPlain("Dimensions", "dimensions");
+      addPlain("Wood type", "woodType");
+      addPlain("Finish / color", "finish");
+      addPlain("Quantity", "quantity");
+      addPlain("Budget", "budget");
+      addPlain("Needed by", "deadline");
+      addPlain("Notes", "notes");
+      const subject = `New Piece Request — ${site.name}`;
+      const url = `mailto:${site.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+      window.location.href = url;
+    } else {
+      const lines: string[] = [`🪵 *New Piece Request — ${site.name}*`, ""];
+      const addMd = (label: string, key: string) => {
+        const v = get(key);
+        if (v) lines.push(`*${label}:* ${v}`);
+      };
+      addMd("Name", "customerName");
+      addMd("Phone", "phone");
+      addMd("Email", "email");
+      addMd("Category", "category");
+      addMd("Specific piece", "product");
+      addMd("Dimensions", "dimensions");
+      addMd("Wood type", "woodType");
+      addMd("Finish / color", "finish");
+      addMd("Quantity", "quantity");
+      addMd("Budget", "budget");
+      addMd("Needed by", "deadline");
+      addMd("Notes", "notes");
+      const url = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(lines.join("\n"))}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
 
-    add("Name", "customerName");
-    add("Phone", "phone");
-    add("Email", "email");
-    add("Category", "category");
-    add("Specific piece", "product");
-    add("Dimensions", "dimensions");
-    add("Wood type", "woodType");
-    add("Finish / color", "finish");
-    add("Quantity", "quantity");
-    add("Budget", "budget");
-    add("Needed by", "deadline");
-    add("Notes", "notes");
-
-    const message = lines.join("\n");
-    const url = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-    setSent(true);
+    setSent(routeRef.current);
     form.reset();
   }
 
   if (sent) {
+    const isEmail = sent === "email";
     return (
       <div className="flex flex-col items-center gap-6 py-10 text-center">
-        <WhatsAppIcon className="h-14 w-14 text-[#25D366]" />
+        {isEmail ? (
+          <MailIcon className="h-14 w-14 text-wood-dark" />
+        ) : (
+          <WhatsAppIcon className="h-14 w-14 text-[#25D366]" />
+        )}
         <div>
-          <h2 className="font-serif text-2xl font-bold text-walnut">WhatsApp opened!</h2>
+          <h2 className="font-serif text-2xl font-bold text-walnut">
+            {isEmail ? "Email client opened!" : "WhatsApp opened!"}
+          </h2>
           <p className="mt-2 text-espresso/80">
-            Your request has been pre-filled in WhatsApp. Just tap <strong>Send</strong> to reach
-            Lenwood directly.
+            {isEmail
+              ? <>Your request has been pre-filled. Just hit <strong>Send</strong> to reach Lenwood by email.</>
+              : <>Your request has been pre-filled in WhatsApp. Just tap <strong>Send</strong> to reach Lenwood directly.</>
+            }
           </p>
         </div>
         <button
           type="button"
-          onClick={() => setSent(false)}
+          onClick={() => setSent(null)}
           className="btn-outline text-sm"
         >
           Submit another request
@@ -195,14 +225,28 @@ export function OrderForm({
         </Field>
       </Fieldset>
 
-      <div className="flex flex-col items-start gap-3 border-t border-sand-dark pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="flex items-center gap-2 text-sm text-espresso/70">
-          <WhatsAppIcon className="h-4 w-4 text-[#25D366]" />
-          Opens WhatsApp — no payment, we&apos;ll talk details &amp; pricing.
+      <div className="flex flex-col gap-3 border-t border-sand-dark pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-espresso/70">
+          No payment — choose how to send your request to Lenwood.
         </p>
-        <button type="submit" className="btn-primary w-full sm:w-auto">
-          Send via WhatsApp
-        </button>
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+          <button
+            type="submit"
+            onClick={() => { routeRef.current = "email"; }}
+            className="btn-outline flex w-full items-center justify-center gap-2 text-sm sm:w-auto"
+          >
+            <MailIcon className="h-4 w-4" />
+            Send via Email
+          </button>
+          <button
+            type="submit"
+            onClick={() => { routeRef.current = "whatsapp"; }}
+            className="btn-primary flex w-full items-center justify-center gap-2 text-sm sm:w-auto"
+          >
+            <WhatsAppIcon className="h-4 w-4" />
+            Send via WhatsApp
+          </button>
+        </div>
       </div>
     </form>
   );
@@ -253,6 +297,15 @@ function WhatsAppIcon({ className }: { className?: string }) {
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
       <path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.554 4.103 1.523 5.827L.057 23.882a.5.5 0 0 0 .61.61l6.101-1.48A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 0 1-5.032-1.388l-.36-.214-3.742.907.934-3.653-.235-.375A9.818 9.818 0 1 1 12 21.818z" />
+    </svg>
+  );
+}
+
+function MailIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
     </svg>
   );
 }
