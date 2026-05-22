@@ -14,14 +14,18 @@ type CalOrder = {
 };
 
 async function getOrdersWithDueDates(): Promise<CalOrder[]> {
-  const sb = getSupabaseAdmin();
-  if (!sb) return [];
-  const { data } = await sb
-    .from("woodworking_orders")
-    .select("id, customer_name, product, category, status, due_date")
-    .not("due_date", "is", null)
-    .order("due_date", { ascending: true });
-  return (data ?? []) as CalOrder[];
+  try {
+    const sb = getSupabaseAdmin();
+    if (!sb) return [];
+    const { data } = await sb
+      .from("woodworking_orders")
+      .select("id, customer_name, product, category, status, due_date")
+      .not("due_date", "is", null)
+      .order("due_date", { ascending: true });
+    return (data ?? []) as CalOrder[];
+  } catch {
+    return [];
+  }
 }
 
 export default async function CalendarPage() {

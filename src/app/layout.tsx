@@ -16,8 +16,16 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+function getSiteUrl() {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://popswoodshop.com");
+  } catch {
+    return new URL("https://popswoodshop.com");
+  }
+}
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://popswoodshop.com"),
+  metadataBase: getSiteUrl(),
   title: {
     template: `%s · ${site.name}`,
     default: `${site.name} · Handmade, Made-to-Order Woodwork`,

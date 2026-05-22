@@ -5,15 +5,19 @@ import { OrdersClient } from "./OrdersClient";
 export const metadata: Metadata = { title: "Orders · Admin" };
 
 async function getAllOrders() {
-  const sb = getSupabaseAdmin();
-  if (!sb) return [];
-  const { data } = await sb
-    .from("woodworking_orders")
-    .select(
-      "id, customer_name, phone, email, category, product, status, quote_amount, deposit_amount, due_date, created_at, budget, notes, dimensions, wood_type, finish, quantity, admin_notes"
-    )
-    .order("created_at", { ascending: false });
-  return data ?? [];
+  try {
+    const sb = getSupabaseAdmin();
+    if (!sb) return [];
+    const { data } = await sb
+      .from("woodworking_orders")
+      .select(
+        "id, customer_name, phone, email, category, product, status, quote_amount, deposit_amount, due_date, created_at, budget, notes, dimensions, wood_type, finish, quantity, admin_notes"
+      )
+      .order("created_at", { ascending: false });
+    return data ?? [];
+  } catch {
+    return [];
+  }
 }
 
 export default async function OrdersPage({

@@ -7,14 +7,18 @@ import { OrderDetailForm } from "./OrderDetailForm";
 export const metadata: Metadata = { title: "Order Detail · Admin" };
 
 async function getOrder(id: string) {
-  const sb = getSupabaseAdmin();
-  if (!sb) return null;
-  const { data } = await sb
-    .from("woodworking_orders")
-    .select("*")
-    .eq("id", id)
-    .single();
-  return data;
+  try {
+    const sb = getSupabaseAdmin();
+    if (!sb) return null;
+    const { data } = await sb
+      .from("woodworking_orders")
+      .select("*")
+      .eq("id", id)
+      .single();
+    return data;
+  } catch {
+    return null;
+  }
 }
 
 export default async function OrderDetailPage({

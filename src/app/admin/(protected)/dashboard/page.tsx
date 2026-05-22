@@ -39,15 +39,19 @@ type Order = {
 };
 
 async function getOrders(): Promise<Order[]> {
-  const sb = getSupabaseAdmin();
-  if (!sb) return [];
-  const { data } = await sb
-    .from("woodworking_orders")
-    .select(
-      "id, customer_name, phone, category, product, status, quote_amount, deposit_amount, due_date, created_at, budget"
-    )
-    .order("created_at", { ascending: false });
-  return (data ?? []) as Order[];
+  try {
+    const sb = getSupabaseAdmin();
+    if (!sb) return [];
+    const { data } = await sb
+      .from("woodworking_orders")
+      .select(
+        "id, customer_name, phone, category, product, status, quote_amount, deposit_amount, due_date, created_at, budget"
+      )
+      .order("created_at", { ascending: false });
+    return (data ?? []) as Order[];
+  } catch {
+    return [];
+  }
 }
 
 export default async function DashboardPage() {
