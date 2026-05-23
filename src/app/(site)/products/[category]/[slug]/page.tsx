@@ -85,7 +85,12 @@ export default async function ProductDetailPage({
 
           {/* Buy it online */}
           <div className="mt-7">
-            <BuyButton slug={product.slug} priceCents={product.priceCents} />
+            <BuyButton
+              slug={product.slug}
+              priceCents={product.priceCents}
+              personalizationPrompt={product.personalization}
+              personalizationRequired={product.personalizationRequired}
+            />
           </div>
         </div>
       </div>

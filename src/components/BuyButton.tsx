@@ -58,13 +58,31 @@ function loadSquareSdk(): Promise<SquareSdk> {
 
 type Status = "idle" | "loading" | "ready" | "processing" | "success" | "error";
 
-export function BuyButton({ slug, priceCents }: { slug: string; priceCents: number }) {
+export interface BuyButtonProps {
+  slug: string;
+  priceCents: number;
+  /** Prompt for the personalization field; when set, the field is shown. */
+  personalizationPrompt?: string;
+  /** When true, the buyer must fill personalization before paying. */
+  personalizationRequired?: boolean;
+}
+
+export function BuyButton({
+  slug,
+  priceCents,
+  personalizationPrompt,
+  personalizationRequired = false,
+}: BuyButtonProps) {
   const configured = Boolean(APP_ID && LOCATION_ID);
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string | null>(null);
+  const [note, setNote] = useState("");
   const cardRef = useRef<SquareCard | null>(null);
   const containerId = `sq-card-${slug}`;
+
+  const showNote = Boolean(personalizationPrompt);
+  const noteMissing = personalizationRequired && note.trim() === "";
 
   // Build the hosted card form once the buyer opens checkout.
   useEffect(() => {
@@ -103,9 +121,23 @@ export function BuyButton({ slug, priceCents }: { slug: string; priceCents: numb
     };
   }, [open, configured, containerId]);
 
+  function handleBuyNow() {
+    if (noteMissing) {
+      setMessage("Please add the personalization details above first.");
+      return;
+    }
+    setMessage(null);
+    setStatus("loading");
+    setOpen(true);
+  }
+
   async function handlePay() {
     const card = cardRef.current;
     if (!card) return;
+    if (noteMissing) {
+      setMessage("Please add the personalization details above first.");
+      return;
+    }
     setStatus("processing");
     setMessage(null);
     try {
@@ -119,6 +151,7 @@ export function BuyButton({ slug, priceCents }: { slug: string; priceCents: numb
         slug,
         sourceId: result.token,
         idempotencyKey: crypto.randomUUID(),
+        personalization: note.trim() || undefined,
       });
       if (charge.ok) {
         setStatus("success");
@@ -134,29 +167,13 @@ export function BuyButton({ slug, priceCents }: { slug: string; priceCents: numb
 
   const price = formatPrice(priceCents);
 
-  // No public Square keys yet → show a disabled affordance, keep the page working.
-  if (!configured) {
-    return (
-      <div className="rounded-[var(--radius-card)] border border-sand-dark bg-cream-50 p-5">
-        <p className="font-serif text-lg font-bold text-walnut">Buy it now — {price}</p>
-        <button
-          type="button"
-          disabled
-          className="btn-primary mt-3 w-full cursor-not-allowed opacity-50"
-          title="Set NEXT_PUBLIC_SQUARE_APP_ID and NEXT_PUBLIC_SQUARE_LOCATION_ID to enable online checkout"
-        >
-          Online checkout coming soon
-        </button>
-      </div>
-    );
-  }
-
   if (status === "success") {
     return (
       <div className="rounded-[var(--radius-card)] border border-wood-dark/40 bg-sand/60 p-5">
         <p className="font-serif text-lg font-bold text-walnut">Payment received — thank you! 🎉</p>
         <p className="mt-1 text-sm text-espresso/80">
-          We&apos;ll text you to confirm the details and timing. A receipt is on its way to your email.
+          We&apos;ll get started on your piece and reach out to confirm the details. A receipt is on
+          its way to your email.
         </p>
       </div>
     );
@@ -166,16 +183,43 @@ export function BuyButton({ slug, priceCents }: { slug: string; priceCents: numb
     <div className="rounded-[var(--radius-card)] border border-sand-dark bg-cream-50 p-5">
       <p className="font-serif text-lg font-bold text-walnut">Buy it now — {price}</p>
 
-      {!open ? (
+      {showNote && (
+        <div className="mt-3">
+          <label
+            htmlFor={`note-${slug}`}
+            className="block text-sm font-semibold text-walnut"
+          >
+            Personalization
+            {personalizationRequired && <span className="text-wood-dark"> *</span>}
+          </label>
+          <textarea
+            id={`note-${slug}`}
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            disabled={status === "processing"}
+            rows={2}
+            maxLength={400}
+            placeholder={personalizationPrompt}
+            className="mt-1 w-full rounded-[var(--radius-card)] border border-sand-dark bg-white px-3 py-2 text-sm text-espresso shadow-inner outline-none placeholder:text-espresso/45 focus:border-wood-dark"
+          />
+          <p className="mt-1 text-xs text-espresso/60">
+            Tell us how to make it yours — we&apos;ll build to this note.
+          </p>
+        </div>
+      )}
+
+      {!configured ? (
+        // No public Square keys yet → keep the page working, show the field above.
         <button
           type="button"
-          onClick={() => {
-            setMessage(null);
-            setStatus("loading");
-            setOpen(true);
-          }}
-          className="btn-primary mt-3 w-full"
+          disabled
+          className="btn-primary mt-3 w-full cursor-not-allowed opacity-50"
+          title="Set NEXT_PUBLIC_SQUARE_APP_ID and NEXT_PUBLIC_SQUARE_LOCATION_ID to enable online checkout"
         >
+          Online checkout coming soon
+        </button>
+      ) : !open ? (
+        <button type="button" onClick={handleBuyNow} className="btn-primary mt-3 w-full">
           Buy Now
         </button>
       ) : (
@@ -201,6 +245,8 @@ export function BuyButton({ slug, priceCents }: { slug: string; priceCents: numb
           </p>
         </div>
       )}
+
+      {!open && message && <p className="mt-2 text-sm font-medium text-red-700">{message}</p>}
     </div>
   );
 }

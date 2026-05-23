@@ -41,6 +41,14 @@ export interface Product {
   blurb: string;
   /** Online "Buy Now" price, in cents (USD). PLACEHOLDER — set the real price. */
   priceCents: number;
+  /**
+   * If set, the detail page shows a "Personalization" field at checkout with this as the
+   * prompt/placeholder (e.g. the name to engrave, the team & colors). The buyer's text rides
+   * along on the Square payment note.
+   */
+  personalization?: string;
+  /** When true, the buyer must fill the personalization field before they can pay. */
+  personalizationRequired?: boolean;
   /** Optional made-to-order detail hints shown on the detail page. */
   details?: {
     sizeNote?: string;
@@ -107,6 +115,7 @@ export const products: Product[] = [
     blurb:
       "A two-tone console with a dark stained top and a chunky white farmhouse base, plus a lower shelf for baskets and bins. Sits perfectly behind the couch or as an entryway catch-all.",
     priceCents: 24900, // PLACEHOLDER
+    personalization: "Tell us your length, base paint color, and top stain",
     details: {
       sizeNote: "Built to your length",
       woodNote: "Solid pine",
@@ -123,6 +132,7 @@ export const products: Product[] = [
     blurb:
       "A long, sturdy buffet built to anchor a coffee bar or dining-room serving station — dark plank top over a white base with a full lower shelf for all your gear. Made to your wall.",
     priceCents: 32900, // PLACEHOLDER
+    personalization: "Tell us your length, base paint color, and top stain",
     details: {
       sizeNote: "Up to 7 ft and beyond",
       woodNote: "Solid pine",
@@ -140,6 +150,7 @@ export const products: Product[] = [
     blurb:
       "A space-saving corner unit — tall X-frame towers framing a built-in desk or display surface. Made for a home-office nook or a tucked-away reading corner.",
     priceCents: 18900, // PLACEHOLDER
+    personalization: "Your corner's dimensions, plus frame & stain colors",
     details: {
       sizeNote: "Sized to fit your corner",
       woodNote: "Painted pine with a stained top",
@@ -156,6 +167,7 @@ export const products: Product[] = [
     blurb:
       "A trio of torched-wood peaks with snowy caps, open cubbies for trinkets, and a row of hooks underneath for keys and leashes. A rugged little catch-all for the entryway or cabin.",
     priceCents: 6900, // PLACEHOLDER
+    personalization: "Any stain or finish preferences? (optional)",
     details: {
       sizeNote: "About 24 in wide",
       woodNote: "Torched pine",
@@ -174,6 +186,7 @@ export const products: Product[] = [
     blurb:
       "A torched-finish standing frame built to cradle a hanging basket or wreath, topped with a carved “Welcome.” A warm hello by the front door in every season.",
     priceCents: 8900, // PLACEHOLDER
+    personalization: "Word or name to carve (e.g. “Welcome” or a family name)",
     details: {
       sizeNote: "Porch / entry size",
       woodNote: "Torched pine",
@@ -189,6 +202,7 @@ export const products: Product[] = [
     blurb:
       "The full Biker's Prayer engraved deep into the grain beneath a cruiser, wrapped in a routed border. A heartfelt gift for the rider in the family.",
     priceCents: 4900, // PLACEHOLDER
+    personalization: "Add a name, or swap in a different prayer? (optional)",
     details: {
       sizeNote: "Wall / shelf size",
       woodNote: "Stained hardwood",
@@ -205,6 +219,7 @@ export const products: Product[] = [
     blurb:
       "The same prayer, this time cut and layered into the shape of a cross — the words form the whole piece. A striking faith-and-the-road keepsake.",
     priceCents: 4900, // PLACEHOLDER
+    personalization: "Add a name, or use different text? (optional)",
     details: {
       sizeNote: "Wall size",
       woodNote: "Layered birch",
@@ -220,6 +235,8 @@ export const products: Product[] = [
     blurb:
       "A framed, painted team-pride paw in your colors, set in a rustic torched frame. Game-day decor for the porch, den, or man cave — send us your team.",
     priceCents: 4500, // PLACEHOLDER
+    personalization: "Which team, mascot, and colors?",
+    personalizationRequired: true,
     details: {
       sizeNote: "Wall plaque",
       woodNote: "Framed pine",
@@ -235,6 +252,8 @@ export const products: Product[] = [
     blurb:
       "A standing “HOME” sign with your state's shape and an icon worked right into the lettering, seated in a little planter-style base. Tell us your state and we'll make it yours.",
     priceCents: 3900, // PLACEHOLDER
+    personalization: "Which state, and the icon/wording to feature",
+    personalizationRequired: true,
     details: {
       sizeNote: "Tabletop standing sign",
       woodNote: "Painted pine with cut overlay",
@@ -250,6 +269,7 @@ export const products: Product[] = [
     blurb:
       "Our sassiest seller — a painted heifer with a sunflower in her teeth, framed by a leafy wreath. “Not Today Heifer.” Want different words? We'll letter your own.",
     priceCents: 3900, // PLACEHOLDER
+    personalization: "Use different wording? Tell us what to letter (optional)",
     details: {
       sizeNote: "Round wall sign",
       woodNote: "Painted birch",
@@ -266,6 +286,7 @@ export const products: Product[] = [
     blurb:
       "The heifer again, this time engraved into light wood and set in a chunky rustic frame with corner accents. A farmhouse-wall favorite.",
     priceCents: 4900, // PLACEHOLDER
+    personalization: "Use different wording? Tell us what to letter (optional)",
     details: {
       sizeNote: "Framed wall art",
       woodNote: "Engraved maple, stained frame",
@@ -281,6 +302,7 @@ export const products: Product[] = [
     blurb:
       "The dressy version — the same cheeky heifer wrapped in a delicate cut-scroll border. The fancy way to tell the world it's not today.",
     priceCents: 4500, // PLACEHOLDER
+    personalization: "Use different wording? Tell us what to letter (optional)",
     details: {
       sizeNote: "Wall sign",
       woodNote: "Engraved & cut birch",
@@ -298,6 +320,7 @@ export const products: Product[] = [
     blurb:
       "The Biker's Prayer shrunk down to ride along — engraved on a smooth hardwood fob with a sturdy split ring. A small gift that means a lot.",
     priceCents: 1500, // PLACEHOLDER
+    personalization: "Add a name or initials to the back? (optional)",
     details: {
       sizeNote: "Pocket keychain",
       woodNote: "Beech",
@@ -313,6 +336,8 @@ export const products: Product[] = [
     blurb:
       "A clean little square fob engraved with a name, monogram, or date — hearts and accents optional. (Shown: “GiGi.”) Tell us the name and we'll burn it in.",
     priceCents: 1500, // PLACEHOLDER
+    personalization: "Name, monogram, or date to engrave (e.g. “GiGi”)",
+    personalizationRequired: true,
     details: {
       sizeNote: "Square keychain",
       woodNote: "Beech",
@@ -331,6 +356,7 @@ export const products: Product[] = [
     blurb:
       "A hinged keepsake box with a layered carved rose and a heart-cut lattice lid. A romantic gift for an anniversary, Valentine's, or a “just because.”",
     priceCents: 5900, // PLACEHOLDER
+    personalization: "Add a name or date? (optional)",
     details: {
       sizeNote: "Keepsake box",
       woodNote: "Layered hardwood",
@@ -347,6 +373,7 @@ export const products: Product[] = [
     blurb:
       "A deep layered-wood forest with a bear and a deer slipping between the pines, lit up in warm autumn color over a moody blue. A statement piece for a cabin or den.",
     priceCents: 9900, // PLACEHOLDER
+    personalization: "Any size or color preferences? (optional)",
     details: {
       sizeNote: "Framed wall art",
       woodNote: "Layered cut wood",
@@ -362,6 +389,7 @@ export const products: Product[] = [
     blurb:
       "The same dimensional forest in all-natural wood tones — quieter, warmer, all grain and shadow. Bear and deer included; sized to your wall.",
     priceCents: 9900, // PLACEHOLDER
+    personalization: "Any size or stain preferences? (optional)",
     details: {
       sizeNote: "Framed wall art",
       woodNote: "Layered natural wood",
@@ -377,6 +405,8 @@ export const products: Product[] = [
     blurb:
       "A matched pair of live-edge wood slices burned with a fraternal emblem or crest. Great for a lodge wall or a member's gift — send us the emblem for your order.",
     priceCents: 5900, // PLACEHOLDER
+    personalization: "Which emblem or crest should we burn in?",
+    personalizationRequired: true,
     details: {
       sizeNote: "Live-edge slices",
       woodNote: "Natural pine rounds",
@@ -392,6 +422,8 @@ export const products: Product[] = [
     blurb:
       "A wall-mount cast opener over a torched board, with a cap-catcher box and your team's mascot painted on. Bottoms up in the garage bar or man cave.",
     priceCents: 4900, // PLACEHOLDER
+    personalization: "Which team, mascot, and colors?",
+    personalizationRequired: true,
     details: {
       sizeNote: "Wall mount",
       woodNote: "Torched pine + cast opener",
@@ -407,6 +439,7 @@ export const products: Product[] = [
     blurb:
       "The same sturdy wall opener and cap-catcher, engraved with a wink — “Go ahead, take your top off.” A guaranteed grin for the home bar; we'll swap in your own line.",
     priceCents: 4900, // PLACEHOLDER
+    personalization: "Use your own line? Type it here (optional)",
     details: {
       sizeNote: "Wall mount",
       woodNote: "Torched pine + cast opener",
@@ -422,6 +455,7 @@ export const products: Product[] = [
     blurb:
       "A cheeky engraved coaster set — a shades-wearing little bird and the “Little Pecker Club” crest. A gag gift that actually protects the table; personalize the bottom line.",
     priceCents: 3500, // PLACEHOLDER
+    personalization: "Personalize the bottom line / club name? (optional)",
     details: {
       sizeNote: "Set of 4–6",
       woodNote: "Engraved hardwood",
@@ -437,6 +471,8 @@ export const products: Product[] = [
     blurb:
       "An engraved caddy cradling a row of glass votives, personalized with your family name and finished with rope handles for the table or mantel. (Shown: “Beasley's.”)",
     priceCents: 4500, // PLACEHOLDER
+    personalization: "Family name to engrave (e.g. “Beasley's”)",
+    personalizationRequired: true,
     details: {
       sizeNote: "Holds 4 votives",
       woodNote: "Stained oak",
@@ -452,6 +488,8 @@ export const products: Product[] = [
     blurb:
       "An arched, hangable keepsake tag — a party-hat duck and a sweet thank-you, fully personalized. (Shown: “one lucky duck, love Colten.”) A heartfelt little gift for a favorite person.",
     priceCents: 2500, // PLACEHOLDER
+    personalization: "Names & message (e.g. “one lucky duck, love Colten”)",
+    personalizationRequired: true,
     details: {
       sizeNote: "Hangable tag",
       woodNote: "Engraved birch",
