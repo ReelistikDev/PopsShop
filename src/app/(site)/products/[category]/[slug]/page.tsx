@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProduct, products } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
+import { BuyButton } from "@/components/BuyButton";
 
 type Params = { category: string; slug: string };
 
@@ -38,8 +39,6 @@ export default async function ProductDetailPage({
   const related = products
     .filter((p) => p.slug !== product.slug)
     .slice(0, 3);
-
-  const orderHref = `/custom-order?product=${product.slug}`;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
@@ -84,20 +83,9 @@ export default async function ProductDetailPage({
             </dl>
           )}
 
-          <div className="mt-7 rounded-[var(--radius-card)] border border-wood-dark/30 bg-sand/50 p-5">
-            <p className="font-serif text-lg font-bold text-walnut">Made to order</p>
-            <p className="mt-1 text-sm text-espresso/75">
-              There&apos;s no checkout — send a request and we&apos;ll reach you via WhatsApp or email
-              to talk through pricing and timing.
-            </p>
-            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-              <Link href={orderHref} className="btn-primary">
-                Request This Piece
-              </Link>
-              <Link href="/custom-order" className="btn-outline">
-                Start From Scratch
-              </Link>
-            </div>
+          {/* Buy it online */}
+          <div className="mt-7">
+            <BuyButton slug={product.slug} priceCents={product.priceCents} />
           </div>
         </div>
       </div>
