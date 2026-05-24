@@ -2,7 +2,7 @@ import { Resend } from "resend";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-const FROM = process.env.EMAIL_FROM ?? "LB's Wood-Crafts <orders@popswoodshop.com>";
+const FROM = process.env.EMAIL_FROM ?? "LB's Woodshop <orders@popswoodshop.com>";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL
   ? process.env.NEXT_PUBLIC_SITE_URL.startsWith("http")
     ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
@@ -36,7 +36,7 @@ export async function sendPaymentEmail(order: {
 <body style="font-family:Georgia,serif;background:#f6efe2;margin:0;padding:0;">
   <div style="max-width:560px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e8dcc8;">
     <div style="background:#1a1009;padding:24px 32px;">
-      <p style="margin:0;font-size:20px;font-weight:bold;color:#f6efe2;letter-spacing:0.5px;">LB's Wood-Crafts</p>
+      <p style="margin:0;font-size:20px;font-weight:bold;color:#f6efe2;letter-spacing:0.5px;">LB's Woodshop</p>
       <p style="margin:4px 0 0;font-size:13px;color:#d8c3a2;">Handmade, Made-to-Order Woodwork · Camden, SC</p>
     </div>
     <div style="padding:32px;">
@@ -75,7 +75,7 @@ export async function sendPaymentEmail(order: {
   await resend.emails.send({
     from: FROM,
     to: order.email,
-    subject: `Your LB's Wood-Crafts order is ready for payment`,
+    subject: `Your LB's Woodshop order is ready for payment`,
     html,
   });
 }
