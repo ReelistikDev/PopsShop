@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { products } from "@/data/products";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { ProductCard } from "@/components/ProductCard";
 
 export const metadata: Metadata = {
@@ -8,7 +8,25 @@ export const metadata: Metadata = {
     "Browse handmade tables, shelves, signs, and custom woodwork. Every piece is made to order.",
 };
 
-export default function ProductsPage() {
+async function getProducts() {
+  try {
+    const sb = getSupabaseAdmin();
+    if (!sb) return [];
+    const { data } = await sb
+      .from("products")
+      .select("id, slug, name, category, image_url, alt, blurb")
+      .eq("active", true)
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false });
+    return data ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export default async function ProductsPage() {
+  const products = await getProducts();
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
       <header className="max-w-2xl">
@@ -20,11 +38,18 @@ export default function ProductsPage() {
         </p>
       </header>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((product) => (
-          <ProductCard key={product.slug} product={product} />
-        ))}
-      </div>
+      {products.length === 0 ? (
+        <div className="mt-12 text-center text-espresso/60">
+          <p className="text-lg font-medium">New pieces coming soon.</p>
+          <p className="mt-1 text-sm">Check back shortly — or request a custom piece today.</p>
+        </div>
+      ) : (
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {products.map((p) => (
+            <ProductCard key={p.slug} product={p} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

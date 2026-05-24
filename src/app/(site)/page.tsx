@@ -1,11 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getFeaturedProducts } from "@/data/products";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { site } from "@/data/site";
 import { ProductCard } from "@/components/ProductCard";
 
-export default function Home() {
-  const featured = getFeaturedProducts();
+async function getFeaturedProducts() {
+  try {
+    const sb = getSupabaseAdmin();
+    if (!sb) return [];
+    const { data } = await sb
+      .from("products")
+      .select("id, slug, name, category, image_url, alt, blurb")
+      .eq("active", true)
+      .eq("featured", true)
+      .order("sort_order", { ascending: true })
+      .limit(6);
+    return data ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export default async function Home() {
+  const featured = await getFeaturedProducts();
 
   return (
     <>
@@ -19,8 +36,6 @@ export default function Home() {
           sizes="100vw"
           className="object-cover object-[center_60%]"
         />
-        {/* Even darkening so the busy workshop background recedes, then a
-            left-weighted gradient for headline contrast and a base to ground it. */}
         <div className="absolute inset-0 bg-bark/55" />
         <div className="absolute inset-0 bg-gradient-to-r from-bark/95 via-bark/75 to-bark/35" />
         <div className="absolute inset-0 bg-gradient-to-t from-bark/50 to-transparent" />
@@ -58,15 +73,22 @@ export default function Home() {
       </section>
 
       {/* Featured products */}
-      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
-        <p className="eyebrow">Fresh From the Bench</p>
-        <h2 className="mt-2 font-serif text-2xl font-bold sm:text-3xl">Featured pieces</h2>
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((product) => (
-            <ProductCard key={product.slug} product={product} />
-          ))}
-        </div>
-      </section>
+      {featured.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+          <p className="eyebrow">Fresh From the Bench</p>
+          <h2 className="mt-2 font-serif text-2xl font-bold sm:text-3xl">Featured pieces</h2>
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((product) => (
+              <ProductCard key={product.slug} product={product} />
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link href="/products" className="btn-outline">
+              Browse all pieces →
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* CTA band */}
       <section className="bg-walnut">

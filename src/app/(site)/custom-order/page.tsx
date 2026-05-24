@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { categories, getProductBySlug, isCategorySlug } from "@/data/products";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { OrderForm } from "@/components/OrderForm";
 
 export const metadata: Metadata = {
@@ -8,6 +8,47 @@ export const metadata: Metadata = {
     "Tell us about the piece you'd like made. No checkout — we'll text you back to talk details and pricing.",
 };
 
+const FALLBACK_CATEGORIES = [
+  { slug: "Tables & Furniture", name: "Tables & Furniture" },
+  { slug: "Shelves & Storage", name: "Shelves & Storage" },
+  { slug: "Signs & Plaques", name: "Signs & Plaques" },
+  { slug: "Cutting Boards", name: "Cutting Boards" },
+  { slug: "Custom", name: "Something Custom" },
+];
+
+async function getCategories() {
+  try {
+    const sb = getSupabaseAdmin();
+    if (!sb) return FALLBACK_CATEGORIES;
+    const { data } = await sb
+      .from("products")
+      .select("category")
+      .eq("active", true)
+      .order("category");
+    if (!data?.length) return FALLBACK_CATEGORIES;
+    const unique = [...new Set(data.map((r) => r.category as string))];
+    return unique.map((c) => ({ slug: c, name: c }));
+  } catch {
+    return FALLBACK_CATEGORIES;
+  }
+}
+
+async function getProductName(slug: string) {
+  try {
+    const sb = getSupabaseAdmin();
+    if (!sb) return null;
+    const { data } = await sb
+      .from("products")
+      .select("name, category")
+      .eq("slug", slug)
+      .eq("active", true)
+      .single();
+    return data ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function CustomOrderPage({
   searchParams,
 }: {
@@ -15,15 +56,13 @@ export default async function CustomOrderPage({
 }) {
   const { product, category } = await searchParams;
 
-  const matchedProduct = product ? getProductBySlug(product) : undefined;
-  const initialCategory = matchedProduct
-    ? matchedProduct.category
-    : category && isCategorySlug(category)
-      ? category
-      : "";
-  const initialProduct = matchedProduct?.name ?? "";
+  const [categories, matchedProduct] = await Promise.all([
+    getCategories(),
+    product ? getProductName(product) : null,
+  ]);
 
-  const categoryOptions = categories.map((c) => ({ slug: c.slug, name: c.name }));
+  const initialCategory = matchedProduct?.category ?? category ?? "";
+  const initialProduct = matchedProduct?.name ?? "";
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
@@ -46,7 +85,7 @@ export default async function CustomOrderPage({
 
       <div className="mt-6 rounded-[var(--radius-card)] border border-sand-dark bg-cream p-4 shadow-sm sm:p-7">
         <OrderForm
-          categories={categoryOptions}
+          categories={categories}
           initialCategory={initialCategory}
           initialProduct={initialProduct}
         />
