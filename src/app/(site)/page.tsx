@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { site } from "@/data/site";
@@ -26,19 +25,11 @@ export default async function Home() {
 
   return (
     <>
-      {/* Hero */}
+      {/* Hero — solid walnut gradient, no product photos */}
       <section className="relative isolate flex min-h-[50vh] items-center overflow-hidden sm:min-h-[58vh]">
-        <Image
-          src="/images/products/tables-console-table.jpg"
-          alt="A handcrafted farmhouse console table styled in the home"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[center_60%]"
-        />
-        <div className="absolute inset-0 bg-bark/55" />
-        <div className="absolute inset-0 bg-gradient-to-r from-bark/95 via-bark/75 to-bark/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-bark/50 to-transparent" />
+        <div className="absolute inset-0 bg-[#1a1009]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2a1e14] via-[#1a1009] to-[#0d0603]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
         <div className="relative mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
           <div className="max-w-xl">
             <p className="eyebrow text-wood">{site.established}</p>
@@ -72,7 +63,7 @@ export default async function Home() {
         <p className="mt-3 text-base leading-relaxed text-espresso/80 sm:text-lg">{site.intro}</p>
       </section>
 
-      {/* Featured products */}
+      {/* Featured products — only shown once products are added */}
       {featured.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
           <p className="eyebrow">Fresh From the Bench</p>
