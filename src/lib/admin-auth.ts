@@ -5,9 +5,17 @@ const SECRET = new TextEncoder().encode(
 );
 
 export async function verifyCredentials(username: string, password: string) {
-  const u = process.env.ADMIN_USERNAME ?? "Sawblade54";
-  const p = process.env.ADMIN_PASSWORD ?? "Kbjh6559@";
-  return username === u && password === p;
+  const users: Array<[string, string]> = [
+    [process.env.ADMIN_USERNAME ?? "Sawblade54", process.env.ADMIN_PASSWORD ?? "Kbjh6559@"],
+  ];
+  // Additional accounts via ADMIN_USERNAME_2/ADMIN_PASSWORD_2, etc.
+  for (let i = 2; ; i++) {
+    const u = process.env[`ADMIN_USERNAME_${i}`];
+    const p = process.env[`ADMIN_PASSWORD_${i}`];
+    if (!u || !p) break;
+    users.push([u, p]);
+  }
+  return users.some(([u, p]) => username === u && password === p);
 }
 
 export async function createSessionToken(): Promise<string> {
