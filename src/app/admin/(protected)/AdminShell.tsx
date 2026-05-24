@@ -6,8 +6,10 @@ import { logoutAction } from "@/app/actions/admin-auth";
 const NAV = [
   { href: "/admin/dashboard", label: "Dashboard" },
   { href: "/admin/orders",    label: "Orders" },
+  { href: "/admin/products",  label: "Products" },
   { href: "/admin/calendar",  label: "Calendar" },
   { href: "/admin/shipping",  label: "Shipping" },
+  { href: "/admin/finances",  label: "Finances" },
 ];
 
 function DashIcon() {
@@ -47,8 +49,23 @@ function ShipIcon() {
     </svg>
   );
 }
+function ProductIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+    </svg>
+  );
+}
+function FinanceIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <line x1="12" y1="1" x2="12" y2="23" />
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+    </svg>
+  );
+}
 
-const ICONS = [DashIcon, OrderIcon, CalIcon, ShipIcon];
+const ICONS = [DashIcon, OrderIcon, ProductIcon, CalIcon, ShipIcon, FinanceIcon];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

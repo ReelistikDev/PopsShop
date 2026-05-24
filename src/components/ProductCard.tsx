@@ -1,24 +1,40 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Product } from "@/data/products";
 
-export function ProductCard({ product }: { product: Product }) {
+type ProductCardProduct = {
+  slug: string;
+  name: string;
+  category: string;
+  image_url?: string | null;
+  alt?: string | null;
+  blurb?: string | null;
+};
+
+export function ProductCard({ product }: { product: ProductCardProduct }) {
   return (
     <Link
-      href={`/products/${product.category}/${product.slug}`}
+      href={`/products/${product.slug}`}
       className="group flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-sand-dark/80 bg-cream-50 shadow-[0_1px_4px_rgba(58,42,29,0.08),0_4px_16px_rgba(58,42,29,0.1)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_6px_24px_rgba(58,42,29,0.18)]"
     >
       {/* Wood grain accent strip */}
       <div className="card-grain-top w-full shrink-0" />
 
       <div className="relative aspect-[4/5] overflow-hidden bg-sand ring-1 ring-inset ring-black/5">
-        <Image
-          src={product.image}
-          alt={product.alt}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-contain saturate-[0.96] transition-transform duration-300 group-hover:scale-105"
-        />
+        {product.image_url ? (
+          <Image
+            src={product.image_url}
+            alt={product.alt ?? product.name}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-contain saturate-[0.96] transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-espresso/20">
+            <svg className="h-16 w-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+              <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
+            </svg>
+          </div>
+        )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bark/15 to-transparent" />
       </div>
 
