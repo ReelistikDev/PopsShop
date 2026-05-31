@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSupabaseAdmin } from "@/lib/supabase";
+import { BuyNowButton } from "./BuyNowButton";
 
 async function getProduct(slug: string) {
   try {
@@ -26,7 +27,7 @@ async function getRelated(slug: string, category: string) {
     if (!sb) return [];
     const { data } = await sb
       .from("products")
-      .select("id, slug, name, category, image_url, alt, blurb, price")
+      .select("id, slug, name, category, image_url, alt, blurb, price, stock_type, stock_quantity")
       .eq("active", true)
       .eq("category", category)
       .neq("slug", slug)
@@ -129,25 +130,56 @@ export default async function ProductDetailPage({
             </div>
           )}
 
-          <div className="mt-5 rounded-xl border border-sand-dark/60 bg-cream-50 p-4 text-sm text-espresso/70">
-            <p className="font-semibold text-espresso/90">Made to order</p>
-            <p className="mt-1">
-              This piece is built when you request it — in your dimensions, wood, and finish.
-              No checkout here; reach us directly to talk details and pricing.
-            </p>
-          </div>
+          {(() => {
+            const isInStock = product.stock_type === "in_stock";
+            const available = isInStock ? (product.stock_quantity ?? 0) > 0 : true;
+            const canBuy = product.price != null && product.price > 0;
+            return (
+              <>
+                <div className="mt-5 rounded-xl border border-sand-dark/60 bg-cream-50 p-4 text-sm text-espresso/70">
+                  <p className="font-semibold text-espresso/90">
+                    {isInStock ? "Ready to ship" : "Made to order"}
+                  </p>
+                  <p className="mt-1">
+                    {isInStock
+                      ? (product.stock_quantity ?? 0) > 0
+                        ? `${product.stock_quantity} available — ships from Camden, SC.`
+                        : "Currently sold out. Request a custom build to have one made."
+                      : product.lead_time
+                        ? `Built when you order it. Lead time: ${product.lead_time}.`
+                        : "Built when you order it — in your dimensions, wood, and finish."}
+                    {product.shipping_cost > 0 && canBuy && (
+                      <> Shipping ${Number(product.shipping_cost).toFixed(2)} added at checkout.</>
+                    )}
+                  </p>
+                </div>
 
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href={`/custom-order?product=${product.slug}&category=${encodeURIComponent(product.category)}`}
-              className="btn-primary"
-            >
-              Request This Piece
-            </Link>
-            <Link href="/custom-order" className="btn-outline">
-              Start From Scratch
-            </Link>
-          </div>
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                  {canBuy ? (
+                    <BuyNowButton
+                      slug={product.slug}
+                      available={available}
+                      isInStock={isInStock}
+                      leadTime={product.lead_time}
+                    />
+                  ) : (
+                    <Link
+                      href={`/custom-order?product=${product.slug}&category=${encodeURIComponent(product.category)}`}
+                      className="btn-primary"
+                    >
+                      Request This Piece
+                    </Link>
+                  )}
+                  <Link
+                    href={`/custom-order?product=${product.slug}&category=${encodeURIComponent(product.category)}`}
+                    className="btn-outline"
+                  >
+                    {canBuy ? "Customize Instead" : "Start From Scratch"}
+                  </Link>
+                </div>
+              </>
+            );
+          })()}
         </div>
       </div>
 

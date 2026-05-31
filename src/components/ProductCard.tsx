@@ -9,9 +9,16 @@ type ProductCardProduct = {
   alt?: string | null;
   blurb?: string | null;
   price?: number | null;
+  stock_type?: "in_stock" | "made_to_order" | null;
+  stock_quantity?: number | null;
 };
 
 export function ProductCard({ product }: { product: ProductCardProduct }) {
+  const soldOut =
+    product.stock_type === "in_stock" && (product.stock_quantity ?? 0) <= 0;
+  const inStock =
+    product.stock_type === "in_stock" && (product.stock_quantity ?? 0) > 0;
+
   return (
     <Link
       href={`/products/${product.slug}`}
@@ -37,6 +44,16 @@ export function ProductCard({ product }: { product: ProductCardProduct }) {
           </div>
         )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bark/15 to-transparent" />
+        {soldOut && (
+          <span className="absolute left-2 top-2 rounded-full bg-red-700/90 px-2.5 py-1 text-[0.6rem] font-bold uppercase tracking-wider text-white shadow">
+            Sold Out
+          </span>
+        )}
+        {inStock && (
+          <span className="absolute left-2 top-2 rounded-full bg-green-700/90 px-2.5 py-1 text-[0.6rem] font-bold uppercase tracking-wider text-white shadow">
+            In Stock
+          </span>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col p-3.5">
