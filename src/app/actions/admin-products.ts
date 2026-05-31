@@ -10,6 +10,10 @@ export type ProductPayload = {
   alt: string | null;
   blurb: string | null;
   price: number | null;
+  stock_type: "in_stock" | "made_to_order";
+  stock_quantity: number;
+  lead_time: string | null;
+  shipping_cost: number;
   size_note: string | null;
   wood_note: string | null;
   finish_note: string | null;

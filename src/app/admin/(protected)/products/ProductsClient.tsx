@@ -35,6 +35,10 @@ const EMPTY: Omit<ProductPayload, "slug"> & { slug: string } = {
   alt: null,
   blurb: null,
   price: null,
+  stock_type: "made_to_order",
+  stock_quantity: 0,
+  lead_time: null,
+  shipping_cost: 0,
   size_note: null,
   wood_note: null,
   finish_note: null,
@@ -70,6 +74,10 @@ export function ProductsClient({ products }: { products: Product[] }) {
       alt: p.alt,
       blurb: p.blurb,
       price: p.price,
+      stock_type: p.stock_type ?? "made_to_order",
+      stock_quantity: p.stock_quantity ?? 0,
+      lead_time: p.lead_time,
+      shipping_cost: p.shipping_cost ?? 0,
       size_note: p.size_note,
       wood_note: p.wood_note,
       finish_note: p.finish_note,
@@ -127,6 +135,7 @@ export function ProductsClient({ products }: { products: Product[] }) {
       alt: form.alt?.trim() || null,
       blurb: form.blurb?.trim() || null,
       price: form.price,
+      lead_time: form.lead_time?.trim() || null,
       size_note: form.size_note?.trim() || null,
       wood_note: form.wood_note?.trim() || null,
       finish_note: form.finish_note?.trim() || null,
@@ -255,6 +264,72 @@ export function ProductsClient({ products }: { products: Product[] }) {
                   onChange={(e) => setForm((f) => ({ ...f, sort_order: parseInt(e.target.value) || 0 }))}
                   className={inp}
                 />
+              </div>
+            </div>
+
+            {/* Inventory & Shipping */}
+            <div className="rounded-lg border border-[#e8dcc8] bg-white/60 p-4">
+              <p className="mb-3 text-xs font-bold uppercase tracking-wide text-[#8a5a32]">
+                Inventory & Shipping
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1 block text-xs font-semibold text-gray-600">Stock Type</label>
+                  <select
+                    value={form.stock_type}
+                    onChange={(e) => setForm((f) => ({ ...f, stock_type: e.target.value as "in_stock" | "made_to_order" }))}
+                    className={inp}
+                  >
+                    <option value="made_to_order">Made to Order</option>
+                    <option value="in_stock">In Stock</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-semibold text-gray-600">
+                    Shipping Cost <span className="font-normal text-gray-400">(per order)</span>
+                  </label>
+                  <div className="relative">
+                    <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400 text-sm">$</span>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={form.shipping_cost}
+                      onChange={(e) => setForm((f) => ({ ...f, shipping_cost: parseFloat(e.target.value) || 0 }))}
+                      placeholder="0.00"
+                      className={`${inp} pl-7`}
+                    />
+                  </div>
+                </div>
+                {form.stock_type === "in_stock" ? (
+                  <div>
+                    <label className="mb-1 block text-xs font-semibold text-gray-600">
+                      Quantity Available
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="1"
+                      value={form.stock_quantity}
+                      onChange={(e) => setForm((f) => ({ ...f, stock_quantity: parseInt(e.target.value) || 0 }))}
+                      className={inp}
+                    />
+                    <p className="mt-1 text-[0.7rem] text-gray-400">Shown as &quot;Sold Out&quot; when zero.</p>
+                  </div>
+                ) : (
+                  <div>
+                    <label className="mb-1 block text-xs font-semibold text-gray-600">
+                      Lead Time <span className="font-normal text-gray-400">(optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={form.lead_time ?? ""}
+                      onChange={(e) => setForm((f) => ({ ...f, lead_time: e.target.value || null }))}
+                      placeholder="e.g., 2–3 weeks"
+                      className={inp}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -425,6 +500,7 @@ export function ProductsClient({ products }: { products: Product[] }) {
                   <th className="px-4 py-3 text-left">Product</th>
                   <th className="hidden px-4 py-3 text-left sm:table-cell">Category</th>
                   <th className="hidden px-4 py-3 text-left sm:table-cell">Price</th>
+                  <th className="hidden px-4 py-3 text-left lg:table-cell">Stock</th>
                   <th className="px-4 py-3 text-center">Active</th>
                   <th className="px-4 py-3 text-center">Featured</th>
                   <th className="px-4 py-3 text-right">Actions</th>
@@ -455,6 +531,23 @@ export function ProductsClient({ products }: { products: Product[] }) {
                     <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">{p.category}</td>
                     <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">
                       {p.price != null ? `$${p.price.toLocaleString()}` : <span className="text-gray-300">—</span>}
+                    </td>
+                    <td className="hidden px-4 py-3 lg:table-cell">
+                      {p.stock_type === "in_stock" ? (
+                        p.stock_quantity > 0 ? (
+                          <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
+                            {p.stock_quantity} in stock
+                          </span>
+                        ) : (
+                          <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700">
+                            Sold out
+                          </span>
+                        )
+                      ) : (
+                        <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700">
+                          Made to order
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-3 text-center">
                       <button
