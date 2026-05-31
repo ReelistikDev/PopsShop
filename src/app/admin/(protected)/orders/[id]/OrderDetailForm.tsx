@@ -1,6 +1,6 @@
 "use client";
 import { useState, useTransition } from "react";
-import { updateOrderAction, resendPaymentEmailAction } from "@/app/actions/admin-orders";
+import { updateOrderAction } from "@/app/actions/admin-orders";
 
 const STATUSES = [
   "new",
@@ -37,8 +37,6 @@ export function OrderDetailForm({ order }: { order: Order }) {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
-  const [emailSent, setEmailSent] = useState(false);
-  const [emailError, setEmailError] = useState("");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -319,26 +317,9 @@ export function OrderDetailForm({ order }: { order: Order }) {
                 Copy
               </button>
             </div>
-            <div className="mt-3 flex items-center gap-3">
-              <button
-                type="button"
-                disabled={isPending}
-                onClick={() => {
-                  setEmailSent(false);
-                  setEmailError("");
-                  startTransition(async () => {
-                    const res = await resendPaymentEmailAction(id);
-                    if (res.error) setEmailError(res.error);
-                    else { setEmailSent(true); setTimeout(() => setEmailSent(false), 4000); }
-                  });
-                }}
-                className="text-xs font-semibold text-[#8a5a32] hover:underline disabled:opacity-50"
-              >
-                {isPending ? "Sending…" : "Resend payment email"}
-              </button>
-              {emailSent && <span className="text-xs font-medium text-green-600">Sent!</span>}
-              {emailError && <span className="text-xs font-medium text-red-600">{emailError}</span>}
-            </div>
+            <p className="mt-3 text-xs text-gray-500">
+              Copy this link and send it to the customer (text, email, or WhatsApp).
+            </p>
           </div>
         )}
 
