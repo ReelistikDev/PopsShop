@@ -17,7 +17,7 @@ export default function LoginPage() {
               <path d="M12 2 6 9h3l-4 5h3.5l-3 4H11v3h2v-3h2.5l-3-4H16l-4-5h3z" />
             </svg>
           </div>
-          <h1 className="font-serif text-2xl font-bold text-[#f6efe2]">LB&apos;s Woodshop</h1>
+          <h1 className="font-serif text-2xl font-bold text-[#f6efe2]">LB&apos;s Wood-Crafts</h1>
           <p className="mt-1 text-sm text-[#b9824f]">Admin Dashboard</p>
         </div>
 

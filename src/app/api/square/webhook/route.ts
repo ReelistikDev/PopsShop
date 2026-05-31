@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     const sigKey = process.env.SQUARE_WEBHOOK_SIGNATURE_KEY;
 
     if (sigKey) {
-      const url = `${process.env.NEXT_PUBLIC_SITE_URL?.startsWith("http") ? "" : "https://"}${process.env.NEXT_PUBLIC_SITE_URL ?? "popswoodshop.com"}/api/square/webhook`;
+      const url = `${process.env.NEXT_PUBLIC_SITE_URL?.startsWith("http") ? "" : "https://"}${process.env.NEXT_PUBLIC_SITE_URL ?? "lbswoodcrafts.com"}/api/square/webhook`;
       const expected = createHmac("sha256", sigKey)
         .update(url + body)
         .digest("base64");

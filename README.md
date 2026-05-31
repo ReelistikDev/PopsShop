@@ -1,4 +1,4 @@
-# Pop's Woodshop
+# LB's Wood-Crafts
 
 A rustic, farmhouse-style marketplace site for a family woodworking business. Customers browse
 handmade pieces and submit **custom order requests** — there's no checkout. Each request is saved to

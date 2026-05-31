@@ -1,5 +1,5 @@
 export const site = {
-  name: "LB's Woodshop",
+  name: "LB's Wood-Crafts",
   shortName: "LB's",
   tagline: "Handcrafted, custom wood pieces — made by hand in Camden, SC.",
   intro:

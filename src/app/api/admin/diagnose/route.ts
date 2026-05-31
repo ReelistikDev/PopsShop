@@ -21,7 +21,7 @@ export async function GET() {
 
   // 2. NEXT_PUBLIC_SITE_URL URL parse check
   try {
-    const raw = process.env.NEXT_PUBLIC_SITE_URL ?? "https://popswoodshop.com";
+    const raw = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lbswoodcrafts.com";
     new URL(raw);
     results.siteUrlParse = { ok: true, value: raw };
   } catch (e) {

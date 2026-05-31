@@ -18,9 +18,9 @@ const inter = Inter({
 
 function getSiteUrl() {
   try {
-    return new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://popswoodshop.com");
+    return new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://lbswoodcrafts.com");
   } catch {
-    return new URL("https://popswoodshop.com");
+    return new URL("https://lbswoodcrafts.com");
   }
 }
 
