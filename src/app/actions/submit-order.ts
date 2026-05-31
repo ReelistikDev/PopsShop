@@ -139,7 +139,7 @@ export async function submitOrder(
 }
 
 function buildSmsBody(data: OrderInput, photoUrl?: string): string {
-  const lines: string[] = ["🪵 New LB's Wood-Crafts order request", ""];
+  const lines: string[] = ["🪵 New LB's Woodshop order request", ""];
   const add = (label: string, value?: string) => {
     if (value && value.trim()) lines.push(`${label}: ${value.trim()}`);
   };

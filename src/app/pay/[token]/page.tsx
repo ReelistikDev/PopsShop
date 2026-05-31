@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { PaymentForm } from "./PaymentForm";
 
-export const metadata: Metadata = { title: "Make Payment · LB's Wood-Crafts" };
+export const metadata: Metadata = { title: "Make Payment · LB's Woodshop" };
 
 async function getOrderByToken(token: string) {
   try {
@@ -35,7 +35,7 @@ export default async function PayPage({
     <div className="min-h-screen bg-[#f6efe2] flex flex-col">
       {/* Header */}
       <header className="bg-[#1a1009] px-6 py-4">
-        <p className="font-serif text-lg font-bold text-[#f6efe2]">LB&apos;s Wood-Crafts</p>
+        <p className="font-serif text-lg font-bold text-[#f6efe2]">LB&apos;s Woodshop</p>
         <p className="text-xs text-[#d8c3a2]">Handmade, Made-to-Order Woodwork · Camden, SC</p>
       </header>
 
