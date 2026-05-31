@@ -26,7 +26,7 @@ async function getRelated(slug: string, category: string) {
     if (!sb) return [];
     const { data } = await sb
       .from("products")
-      .select("id, slug, name, category, image_url, alt, blurb")
+      .select("id, slug, name, category, image_url, alt, blurb, price")
       .eq("active", true)
       .eq("category", category)
       .neq("slug", slug)
@@ -94,6 +94,11 @@ export default async function ProductDetailPage({
           </h1>
           {product.blurb && (
             <p className="mt-3 text-base leading-relaxed text-espresso/80">{product.blurb}</p>
+          )}
+          {product.price != null && (
+            <p className="mt-3 font-serif text-2xl font-bold text-walnut">
+              From ${Number(product.price).toLocaleString()}
+            </p>
           )}
 
           {hasSpecs && (

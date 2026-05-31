@@ -34,6 +34,7 @@ const EMPTY: Omit<ProductPayload, "slug"> & { slug: string } = {
   image_url: null,
   alt: null,
   blurb: null,
+  price: null,
   size_note: null,
   wood_note: null,
   finish_note: null,
@@ -68,6 +69,7 @@ export function ProductsClient({ products }: { products: Product[] }) {
       image_url: p.image_url,
       alt: p.alt,
       blurb: p.blurb,
+      price: p.price,
       size_note: p.size_note,
       wood_note: p.wood_note,
       finish_note: p.finish_note,
@@ -124,6 +126,7 @@ export function ProductsClient({ products }: { products: Product[] }) {
       category: form.category.trim(),
       alt: form.alt?.trim() || null,
       blurb: form.blurb?.trim() || null,
+      price: form.price,
       size_note: form.size_note?.trim() || null,
       wood_note: form.wood_note?.trim() || null,
       finish_note: form.finish_note?.trim() || null,
@@ -226,6 +229,23 @@ export function ProductsClient({ products }: { products: Product[] }) {
                 <datalist id="category-options">
                   {CATEGORIES.map((c) => <option key={c} value={c} />)}
                 </datalist>
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-semibold text-gray-600">
+                  Starting Price <span className="font-normal text-gray-400">(optional, shown as "From $X")</span>
+                </label>
+                <div className="relative">
+                  <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400 text-sm">$</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={form.price ?? ""}
+                    onChange={(e) => setForm((f) => ({ ...f, price: e.target.value ? parseFloat(e.target.value) : null }))}
+                    placeholder="0.00"
+                    className={`${inp} pl-7`}
+                  />
+                </div>
               </div>
               <div>
                 <label className="mb-1 block text-xs font-semibold text-gray-600">Sort Order</label>
@@ -404,6 +424,7 @@ export function ProductsClient({ products }: { products: Product[] }) {
                 <tr className="border-b border-gray-100 text-xs font-semibold uppercase tracking-wide text-gray-400">
                   <th className="px-4 py-3 text-left">Product</th>
                   <th className="hidden px-4 py-3 text-left sm:table-cell">Category</th>
+                  <th className="hidden px-4 py-3 text-left sm:table-cell">Price</th>
                   <th className="px-4 py-3 text-center">Active</th>
                   <th className="px-4 py-3 text-center">Featured</th>
                   <th className="px-4 py-3 text-right">Actions</th>
@@ -432,6 +453,9 @@ export function ProductsClient({ products }: { products: Product[] }) {
                       </div>
                     </td>
                     <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">{p.category}</td>
+                    <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">
+                      {p.price != null ? `$${p.price.toLocaleString()}` : <span className="text-gray-300">—</span>}
+                    </td>
                     <td className="px-4 py-3 text-center">
                       <button
                         onClick={() => handleToggle(p, "active")}

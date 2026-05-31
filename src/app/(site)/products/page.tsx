@@ -15,7 +15,7 @@ async function getProducts() {
     if (!sb) return [];
     const { data } = await sb
       .from("products")
-      .select("id, slug, name, category, image_url, alt, blurb")
+      .select("id, slug, name, category, image_url, alt, blurb, price")
       .eq("active", true)
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false });

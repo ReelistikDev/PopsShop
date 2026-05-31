@@ -9,6 +9,7 @@ create table if not exists products (
   image_url   text,
   alt         text,
   blurb       text,
+  price       numeric(10, 2),
   size_note   text,
   wood_note   text,
   finish_note text,

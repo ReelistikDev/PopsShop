@@ -9,6 +9,7 @@ export type ProductPayload = {
   image_url: string | null;
   alt: string | null;
   blurb: string | null;
+  price: number | null;
   size_note: string | null;
   wood_note: string | null;
   finish_note: string | null;
