@@ -96,7 +96,7 @@ export default async function DashboardPage() {
       <div className="mb-6">
         <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-sm text-gray-500">
-          LB&apos;s Woodshop — Order Overview
+          LB&apos;s Wood-Crafts — Order Overview
         </p>
       </div>
 

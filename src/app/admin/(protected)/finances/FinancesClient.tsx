@@ -342,7 +342,7 @@ export function FinancesClient({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-gray-900">Finances</h1>
-          <p className="text-sm text-gray-500">LB&apos;s Woodshop — Financial Overview</p>
+          <p className="text-sm text-gray-500">LB&apos;s Wood-Crafts — Financial Overview</p>
         </div>
         <select
           value={range}
