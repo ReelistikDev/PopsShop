@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { orderSchema, type OrderInput } from "@/lib/validation";
 import { getSupabaseAdmin, ORDER_PHOTO_BUCKET } from "@/lib/supabase";
 import { sendOrderSms } from "@/lib/twilio";
-import { sendOrderNotification } from "@/lib/email";
 
 export type OrderState = {
   ok: boolean;
@@ -120,23 +119,17 @@ export async function submitOrder(
     );
   }
 
-  // 3) Notify the shop — email to the owner inbox + (if configured) an SMS.
-  //    Both are best-effort; the order is already saved above.
-  const email = await sendOrderNotification({ ...data, photoUrl });
-  if (!email.ok) {
-    console.error("[submitOrder] order email not sent:", email.error);
-  }
-
+  // 3) Text the business with the full order.
   const sms = await sendOrderSms(buildSmsBody(data, photoUrl));
   if (!sms.ok) {
     console.error("[submitOrder] SMS not sent:", sms.error);
   }
 
-  // 4) Best-effort: record whether the shop was notified (email OR SMS).
+  // 4) Best-effort: record how the SMS went.
   if (supabase && orderId) {
     await supabase
       .from("woodworking_orders")
-      .update({ sms_status: email.ok || sms.ok ? "sent" : "failed" })
+      .update({ sms_status: sms.ok ? "sent" : "failed" })
       .eq("id", orderId);
   }
 
