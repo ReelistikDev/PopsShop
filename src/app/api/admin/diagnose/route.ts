@@ -1,9 +1,17 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { verifySessionToken } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  // This endpoint exposes configuration diagnostics — require a valid admin
+  // session. Respond 404 to unauthenticated callers so it isn't discoverable.
+  const sessionToken = (await cookies()).get("admin_session")?.value;
+  if (!sessionToken || !(await verifySessionToken(sessionToken))) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   const results: Record<string, unknown> = {};
 
   // 1. Environment variables
@@ -15,7 +23,7 @@ export async function GET() {
       ? "SET (length=" + process.env.SUPABASE_SERVICE_ROLE_KEY.length + ")"
       : "MISSING",
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL ?? "not set",
-    ADMIN_SESSION_SECRET: process.env.ADMIN_SESSION_SECRET ? "SET" : "not set (using default)",
+    ADMIN_SESSION_SECRET: process.env.ADMIN_SESSION_SECRET ? "SET" : "not set (REQUIRED — admin login will fail)",
     NODE_ENV: process.env.NODE_ENV,
   };
 
@@ -46,12 +54,12 @@ export async function GET() {
     results.cookie = { ok: false, error: String(e) };
   }
 
-  // 5. Jose JWT verify
+  // 5. Jose JWT verify (round-trips the configured secret; no fallback)
   try {
+    const secretStr = process.env.ADMIN_SESSION_SECRET;
+    if (!secretStr) throw new Error("ADMIN_SESSION_SECRET not set");
     const { jwtVerify, SignJWT } = await import("jose");
-    const secret = new TextEncoder().encode(
-      process.env.ADMIN_SESSION_SECRET ?? "lbwc-admin-secret-2024"
-    );
+    const secret = new TextEncoder().encode(secretStr);
     const token = await new SignJWT({ role: "admin" })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
