@@ -23,13 +23,17 @@ export async function POST(req: Request) {
     const sb = getSupabaseAdmin();
     if (!sb) return NextResponse.json({ error: "Database unavailable." }, { status: 503 });
 
-    const { data: product } = await sb
+    const { data: product, error: productError } = await sb
       .from("products")
       .select("id, slug, name, price, stock_type, stock_quantity, shipping_cost, active")
       .eq("slug", slug)
       .eq("active", true)
       .single();
 
+    if (productError) {
+      console.error("Product lookup error:", productError.message);
+      return NextResponse.json({ error: productError.message }, { status: 500 });
+    }
     if (!product) {
       return NextResponse.json({ error: "Product not found." }, { status: 404 });
     }
