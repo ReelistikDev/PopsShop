@@ -33,7 +33,9 @@ export async function POST(req: Request) {
     }
 
     const amount =
-      paymentType === "paid"
+      paymentType === "paid" && order.payment_status === "deposit"
+        ? (order.quote_amount ?? 0) - (order.deposit_amount ?? 0)
+        : paymentType === "paid"
         ? (order.quote_amount ?? 0)
         : (order.deposit_amount ?? 0);
 

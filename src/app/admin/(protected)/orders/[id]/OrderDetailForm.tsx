@@ -235,7 +235,8 @@ export function OrderDetailForm({ order }: { order: Order }) {
                 className={inp}
               >
                 <option value="pending">Pending</option>
-                <option value="shipped">Shipped</option>
+                <option value="ready">Ready to Ship</option>
+                <option value="in_transit">In Transit</option>
                 <option value="delivered">Delivered</option>
               </select>
             </div>

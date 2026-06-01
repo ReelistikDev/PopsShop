@@ -37,8 +37,10 @@ const SQ_SCRIPT =
 export function PaymentForm({ order }: { order: Order }) {
   const [sqReady, setSqReady] = useState(false);
   const [cardReady, setCardReady] = useState(false);
+  const hasDeposit = order.payment_status === "deposit";
+  const canPayFullOnly = hasDeposit && order.quote_amount && order.deposit_amount;
   const [paymentType, setPaymentType] = useState<"deposit" | "paid">(
-    order.deposit_amount ? "deposit" : "paid"
+    canPayFullOnly ? "paid" : order.deposit_amount ? "deposit" : "paid"
   );
   const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -46,8 +48,6 @@ export function PaymentForm({ order }: { order: Order }) {
 
   // Already fully paid
   const alreadyPaid = order.payment_status === "paid";
-  const hasDeposit = order.payment_status === "deposit";
-  const canPayFullOnly = hasDeposit && order.quote_amount && order.deposit_amount;
 
   useEffect(() => {
     if (!sqReady || !SQ_APP_ID || !SQ_LOCATION) return;
@@ -102,8 +102,11 @@ export function PaymentForm({ order }: { order: Order }) {
     }
   }
 
-  const selectedAmount =
-    paymentType === "deposit" ? order.deposit_amount : order.quote_amount;
+  const selectedAmount = canPayFullOnly
+    ? (order.quote_amount! - order.deposit_amount!)
+    : paymentType === "deposit"
+    ? order.deposit_amount
+    : order.quote_amount;
 
   if (alreadyPaid) {
     return (
@@ -216,15 +219,10 @@ export function PaymentForm({ order }: { order: Order }) {
           <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
             Card Details
           </p>
-          <div
-            id="sq-card"
-            className="min-h-[100px]"
-          >
-            {!cardReady && (
-              <div className="flex h-24 items-center justify-center text-sm text-gray-400">
-                Loading payment form…
-              </div>
-            )}
+          <div id="sq-card" className="min-h-[100px]">
+            <div className={`flex h-24 items-center justify-center text-sm text-gray-400${cardReady ? " hidden" : ""}`}>
+              Loading payment form…
+            </div>
           </div>
         </div>
 

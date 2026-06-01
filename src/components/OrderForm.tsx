@@ -2,6 +2,7 @@
 
 import { useState, useRef, FormEvent } from "react";
 import { site } from "@/data/site";
+import { saveCustomOrderAction } from "@/app/actions/save-custom-order";
 
 type CategoryOption = { slug: string; name: string };
 type SendRoute = "whatsapp" | "email";
@@ -46,6 +47,22 @@ export function OrderForm({
     setErrors({});
 
     const get = (key: string) => String(data.get(key) ?? "").trim();
+
+    // Save to DB + send SMS in background (fire-and-forget so popup opens immediately)
+    saveCustomOrderAction({
+      customerName: get("customerName"),
+      phone: get("phone"),
+      email: get("email") || undefined,
+      category: get("category") || undefined,
+      product: get("product") || undefined,
+      dimensions: get("dimensions") || undefined,
+      woodType: get("woodType") || undefined,
+      finish: get("finish") || undefined,
+      quantity: get("quantity") || undefined,
+      budget: get("budget") || undefined,
+      deadline: get("deadline") || undefined,
+      notes: get("notes") || undefined,
+    }).catch(console.error);
 
     if (routeRef.current === "email") {
       const bodyLines: string[] = [`New Piece Request — ${site.name}`, ""];

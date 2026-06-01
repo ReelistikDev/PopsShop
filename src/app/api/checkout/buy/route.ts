@@ -55,7 +55,7 @@ export async function POST(req: Request) {
     const shippingCents = BigInt(Math.round((product.shipping_cost ?? 0) * 100));
 
     const result = await sq.checkout.paymentLinks.create({
-      idempotencyKey: `${product.id}-${Date.now()}`,
+      idempotencyKey: crypto.randomUUID(),
       quickPay: {
         name: product.name,
         priceMoney: { amount: priceCents, currency: "USD" },
