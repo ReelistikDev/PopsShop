@@ -82,7 +82,13 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ url });
   } catch (err) {
-    console.error("Square checkout/buy error:", err);
-    return NextResponse.json({ error: "An unexpected error occurred." }, { status: 500 });
+    const msg =
+      err instanceof Error
+        ? err.message
+        : typeof (err as Record<string, unknown>)?.errors === "object"
+        ? JSON.stringify((err as Record<string, unknown>).errors)
+        : String(err);
+    console.error("Square checkout/buy error:", msg);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
