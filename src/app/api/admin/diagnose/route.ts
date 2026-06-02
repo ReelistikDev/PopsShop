@@ -98,5 +98,13 @@ export async function GET() {
     results.supabaseQuery = { ok: false, error: "client not created" };
   }
 
+  // 8. Square config check
+  results.square = {
+    SQUARE_ENV: process.env.SQUARE_ENV ?? "not set (defaults to sandbox)",
+    SQUARE_ACCESS_TOKEN: process.env.SQUARE_ACCESS_TOKEN ? `SET (length=${process.env.SQUARE_ACCESS_TOKEN.length})` : "MISSING",
+    SQUARE_LOCATION_ID: process.env.SQUARE_LOCATION_ID ? `SET (length=${process.env.SQUARE_LOCATION_ID.length})` : "MISSING",
+    SQUARE_WEBHOOK_SIGNATURE_KEY: process.env.SQUARE_WEBHOOK_SIGNATURE_KEY ? "SET" : "not set",
+  };
+
   return NextResponse.json(results, { status: 200 });
 }
