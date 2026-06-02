@@ -146,7 +146,12 @@ export function ProductsClient({ products }: { products: Product[] }) {
         ? await updateProductAction(editing.id, payload)
         : await addProductAction(payload);
       if (res?.error) {
-        setFormError(res.error);
+        if (res.error === "slug_duplicate") {
+          setFormError("That URL slug is already taken — change the slug and try again.");
+          document.getElementById("field-slug")?.focus();
+        } else {
+          setFormError(res.error);
+        }
         return;
       }
       closeForm();
@@ -216,6 +221,7 @@ export function ProductsClient({ products }: { products: Product[] }) {
                   Slug * <span className="font-normal text-gray-400">(URL: /products/slug)</span>
                 </label>
                 <input
+                  id="field-slug"
                   type="text"
                   value={form.slug}
                   onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}

@@ -33,7 +33,12 @@ export async function addProductAction(data: ProductPayload) {
   const sb = getSupabaseAdmin();
   if (!sb) return { error: "Database not configured" };
   const { error } = await sb.from("products").insert(data);
-  if (error) return { error: error.message };
+  if (error) {
+    if (error.message.includes("products_slug_key") || error.message.includes("unique constraint")) {
+      return { error: "slug_duplicate" };
+    }
+    return { error: error.message };
+  }
   revalidateAll();
   return { ok: true };
 }
