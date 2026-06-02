@@ -98,13 +98,41 @@ export async function GET() {
     results.supabaseQuery = { ok: false, error: "client not created" };
   }
 
-  // 8. Square config check
+  // 8. Square config check + live auth test
+  const sqToken = process.env.SQUARE_ACCESS_TOKEN ?? "";
+  const sqEnv = process.env.SQUARE_ENV ?? "";
+  const sqLocationId = process.env.SQUARE_LOCATION_ID ?? "";
   results.square = {
-    SQUARE_ENV: process.env.SQUARE_ENV ?? "not set (defaults to sandbox)",
-    SQUARE_ACCESS_TOKEN: process.env.SQUARE_ACCESS_TOKEN ? `SET (length=${process.env.SQUARE_ACCESS_TOKEN.length})` : "MISSING",
-    SQUARE_LOCATION_ID: process.env.SQUARE_LOCATION_ID ? `SET (length=${process.env.SQUARE_LOCATION_ID.length})` : "MISSING",
+    SQUARE_ENV: sqEnv || "not set (defaults to sandbox)",
+    SQUARE_ACCESS_TOKEN: sqToken ? `SET (length=${sqToken.length}, starts="${sqToken.slice(0, 6)}...")` : "MISSING",
+    SQUARE_ACCESS_TOKEN_HAS_WHITESPACE: sqToken !== sqToken.trim(),
+    SQUARE_LOCATION_ID: sqLocationId ? `SET (length=${sqLocationId.length})` : "MISSING",
     SQUARE_WEBHOOK_SIGNATURE_KEY: process.env.SQUARE_WEBHOOK_SIGNATURE_KEY ? "SET" : "not set",
   };
+
+  // Live Square auth test — calls /v2/locations to verify token works
+  try {
+    const baseUrl = sqEnv === "production"
+      ? "https://connect.squareup.com"
+      : "https://connect.squareupsandbox.com";
+    const resp = await fetch(`${baseUrl}/v2/locations`, {
+      headers: { Authorization: `Bearer ${sqToken}`, "Square-Version": "2024-01-18" },
+    });
+    const body = await resp.json() as Record<string, unknown>;
+    if (resp.ok) {
+      const locations = (body.locations as Array<Record<string, unknown>> | undefined) ?? [];
+      results.squareAuthTest = {
+        ok: true,
+        status: resp.status,
+        locationCount: locations.length,
+        locationIds: locations.map((l) => l.id),
+      };
+    } else {
+      results.squareAuthTest = { ok: false, status: resp.status, body };
+    }
+  } catch (e) {
+    results.squareAuthTest = { ok: false, error: String(e) };
+  }
 
   return NextResponse.json(results, { status: 200 });
 }

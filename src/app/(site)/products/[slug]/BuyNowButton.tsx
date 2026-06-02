@@ -36,7 +36,13 @@ export function BuyNowButton({ slug, available, isInStock, leadTime }: Props) {
       });
       const data = (await res.json()) as { url?: string; error?: string };
       if (!res.ok || !data.url) {
-        setError(data.error ?? "Could not start checkout.");
+        // Parse Square error JSON if present, otherwise show raw message
+        let msg = data.error ?? "Could not start checkout.";
+        try {
+          const parsed = JSON.parse(msg) as { errors?: Array<{ detail?: string }> };
+          msg = parsed.errors?.[0]?.detail ?? msg;
+        } catch { /* not JSON, use as-is */ }
+        setError(msg);
         setLoading(false);
         return;
       }
