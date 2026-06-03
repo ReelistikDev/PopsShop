@@ -62,7 +62,6 @@ export async function POST(req: Request) {
         locationId: SQUARE_LOCATION_ID,
       },
       checkoutOptions: {
-        askForShippingAddress: true,
         redirectUrl: `${siteUrl}/order-success`,
         merchantSupportEmail: site.contactEmail,
         ...(shippingCents > BigInt(0) && {
